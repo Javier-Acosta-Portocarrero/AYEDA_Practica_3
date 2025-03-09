@@ -8,7 +8,9 @@ std::ostream& operator<<(std::ostream& out, const BigNumber<Base>& numero_a_escr
 
 template <unsigned char Base>
 std::istream& operator>>(std::istream& in, BigNumber<Base>& numero_a_leer) {
-  numero_a_leer.read(in);
+  std::string cadena_cruda;
+  in >> cadena_cruda;
+  numero_a_leer = BigNumber<Base>::create(cadena_cruda.c_str());
   return in;
 }
 
