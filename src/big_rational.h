@@ -28,7 +28,7 @@ template<unsigned char Base> BigRational<Base> operator/(const BigRational<Base>
 template<unsigned char Base> BigRational<Base> operator+(const BigRational<Base>&, const BigRational<Base>&);
 
 template <unsigned char Base>
-class BigRational {
+class BigRational : public BigNumber<Base> {
  public:
   BigRational(const BigInteger<Base>& numerador = BigInteger<Base>{int(0)}, const BigUnsigned<Base>& denominador = 1);
   BigRational(const unsigned char* );
@@ -58,7 +58,7 @@ class BigRational {
   BigNumber<Base>& divide(const BigNumber<Base>&) override;
   operator BigUnsigned<Base>() override;
   operator BigInteger<Base>() override;
-  operator Bigrational<Base>() override;
+  operator BigRational<Base>() override;
 
  protected:
   std::ostream& write(std::ostream&) override;

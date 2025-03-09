@@ -332,38 +332,46 @@ BigInteger<Base> BigInteger<Base>::operator%(const BigInteger<Base>& divisor) co
 }
 
 template <unsigned char Base>
-BigNumber<Base>& BigInteger<Base>::add(const BigNumber<Base>&) {
-
+BigNumber<Base>& BigInteger<Base>::add(const BigNumber<Base>& sumador) {
+  BigInteger<Base> resultado_suma =  *this + BigInteger<Base>::BigInteger<Base>(sumador);
+  BigNumber<Base>& resultado = resultado_suma;
+  return resultado;
 }
 
 template <unsigned char Base>
-BigNumber<Base>& BigInteger<Base>::subtract(const BigNumber<Base>&) {
-
+BigNumber<Base>& BigInteger<Base>::subtract(const BigNumber<Base>& sustraendo) {
+  BigInteger<Base> resultado_resta =  *this - BigInteger<Base>::BigInteger<Base>(sustraendo);
+  BigNumber<Base>& resultado = resultado_resta;
+  return resultado;
 }
 
 template <unsigned char Base>
-BigNumber<Base>& BigInteger<Base>::multiply(const BigNumber<Base>&) {
-
+BigNumber<Base>& BigInteger<Base>::multiply(const BigNumber<Base>& multiplicador) {
+  BigInteger<Base> resultado_mult =  *this * BigInteger<Base>::BigInteger<Base>(multiplicador);
+  BigNumber<Base>& resultado = resultado_mult;
+  return resultado;
 }
 
 template <unsigned char Base>
-BigNumber<Base>& BigInteger<Base>::divide(const BigNumber<Base>&) {
-
+BigNumber<Base>& BigInteger<Base>::divide(const BigNumber<Base>& divisor) {
+  BigInteger<Base> resultado_div =  *this / BigInteger<Base>::BigInteger<Base>(divisor);
+  BigNumber<Base>& resultado = resultado_div;
+  return resultado;
 }
 
 template <unsigned char Base>
 BigInteger<Base>::operator BigUnsigned<Base>() {
-
+  return *this.GetNumeroCrudo();
 }
 
 template <unsigned char Base>
 BigInteger<Base>::operator BigInteger<Base>() {
-
+  return *this;
 }
 
 template <unsigned char Base>
-BigInteger<Base>::operator Bigrational<Base>() {
-  
+BigInteger<Base>::operator BigRational<Base>() {
+  return BigRational<Base>{*this, 1};
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -903,6 +911,42 @@ BigUnsigned<2> BigInteger<2>::GetNumeroCrudo() const {
   }
  }
 
+BigNumber<2>& BigInteger<2>::add(const BigNumber<2>& sumador) {
+  BigInteger<2> resultado_suma =  *this + BigInteger<2>::BigInteger<2>(sumador);
+  BigNumber<2>& resultado = resultado_suma;
+  return resultado;
+}
+
+BigNumber<2>& BigInteger<2>::subtract(const BigNumber<2>& sustraendo) {
+  BigInteger<2> resultado_resta =  *this - BigInteger<2>::BigInteger<2>(sustraendo);
+  BigNumber<2>& resultado = resultado_resta;
+  return resultado;
+}
+
+BigNumber<2>& BigInteger<2>::multiply(const BigNumber<2>& multiplicador) {
+  BigInteger<2> resultado_mult =  *this * BigInteger<2>::BigInteger<2>(multiplicador);
+  BigNumber<2>& resultado = resultado_mult;
+  return resultado;
+}
+
+BigNumber<2>& BigInteger<2>::divide(const BigNumber<2>& divisor) {
+  BigInteger<2> resultado_div =  *this / BigInteger<2>::BigInteger<2>(divisor);
+  BigNumber<2>& resultado = resultado_div;
+  return resultado;
+}
+
+BigInteger<2>::operator BigUnsigned<2>() {
+  return *this.GetNumeroCrudo();
+}
+
+
+BigInteger<2>::operator BigInteger<2>() {
+  return *this;
+}
+
+BigInteger<2>::operator BigRational<2>() {
+  return BigRational{*this, 1};
+}
 
 template BigInteger<8> operator/(const BigInteger<8>&, const BigInteger<8>&);
 template std::ostream& operator<<(std::ostream&, const BigInteger<8>&);
@@ -919,7 +963,7 @@ template BigInteger<8> BigInteger<8>::operator*(const BigInteger<8>&) const;
 template BigInteger<8> BigInteger<8>::operator%(const BigInteger<8>&) const;
 template BigInteger<8>::operator BigUnsigned<8>();
 template BigInteger<8>::operator BigInteger<8>();
-template BigInteger<8>::operator Bigrational<8>();
+template BigInteger<8>::operator BigRational<8>();
 
 template BigInteger<10> operator/(const BigInteger<10>&, const BigInteger<10>&);
 template std::ostream& operator<<(std::ostream&, const BigInteger<10>&);
@@ -934,6 +978,9 @@ template BigInteger<10> operator+(const BigInteger<10>&, const BigInteger<10>&);
 template BigInteger<10> BigInteger<10>::operator-(const BigInteger<10>&) const;
 template BigInteger<10> BigInteger<10>::operator*(const BigInteger<10>&) const;
 template BigInteger<10> BigInteger<10>::operator%(const BigInteger<10>&) const;
+template BigInteger<10>::operator BigUnsigned<10>();
+template BigInteger<10>::operator BigInteger<10>();
+template BigInteger<10>::operator BigRational<10>();
 
 template BigInteger<16> operator/(const BigInteger<16>&, const BigInteger<16>&);
 template std::ostream& operator<<(std::ostream&, const BigInteger<16>&);
@@ -948,6 +995,9 @@ template BigInteger<16> operator+(const BigInteger<16>&, const BigInteger<16>&);
 template BigInteger<16> BigInteger<16>::operator-(const BigInteger<16>&) const;
 template BigInteger<16> BigInteger<16>::operator*(const BigInteger<16>&) const;
 template BigInteger<16> BigInteger<16>::operator%(const BigInteger<16>&) const;
+template BigInteger<16>::operator BigUnsigned<16>();
+template BigInteger<16>::operator BigInteger<16>();
+template BigInteger<16>::operator BigRational<16>();
 
 //template class BigInteger<2>;
 template class BigInteger<8>;

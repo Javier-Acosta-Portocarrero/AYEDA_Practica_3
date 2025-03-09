@@ -35,7 +35,7 @@ template <unsigned char Base> BigUnsigned<Base> operator+(const BigUnsigned<Base
 template <unsigned char Base> BigUnsigned<Base> operator/(const BigUnsigned<Base>&, const BigUnsigned<Base>&);
 
 template <unsigned char Base>
-class BigUnsigned {
+class BigUnsigned : public BigNumber<Base> {
  public:
   BigUnsigned(unsigned n = 0);
   BigUnsigned(const unsigned char* );
@@ -74,7 +74,7 @@ class BigUnsigned {
   BigNumber<Base>& divide(const BigNumber<Base>&) override;
   operator BigUnsigned<Base>() override;
   operator BigInteger<Base>() override;
-  operator Bigrational<Base>() override;
+  operator BigRational<Base>() override;
 
  protected:
   std::ostream& write(std::ostream&) override;
