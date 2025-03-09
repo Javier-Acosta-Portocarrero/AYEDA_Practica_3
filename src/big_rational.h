@@ -15,6 +15,7 @@
 #define BIG_RATIONAL_H
 
 #include <iostream>
+#include "big_number.h"
 #include "big_integer.h"
 #include "funciones.h"
 
@@ -50,6 +51,18 @@ class BigRational {
   bool operator==(const BigRational<Base>&) const;
   
   friend bool operator< <>(const BigRational<Base>&, const BigRational<Base>&);
+
+  BigNumber<Base>& add(const BigNumber<Base>&) override;
+  BigNumber<Base>& subtract(const BigNumber<Base>&) override;
+  BigNumber<Base>& multiply(const BigNumber<Base>&) override;
+  BigNumber<Base>& divide(const BigNumber<Base>&) override;
+  operator BigUnsigned<Base>() override;
+  operator BigInteger<Base>() override;
+  operator Bigrational<Base>() override;
+
+ protected:
+  std::ostream& write(std::ostream&) override;
+  std::istream& read(std::istream&) override;
 
  private:
   BigInteger<Base> numerador_;

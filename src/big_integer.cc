@@ -12,6 +12,7 @@
 // para realizar operaciones con números enteros con signo de gran tamaño.
 
 #include "big_integer.h"
+#include "big_rational.h"
 
 /**
  * @brief Constructor que inicializa un BigUnsigned a partir de un número entero con signo.
@@ -330,6 +331,40 @@ BigInteger<Base> BigInteger<Base>::operator%(const BigInteger<Base>& divisor) co
   return resultado_div;
 }
 
+template <unsigned char Base>
+BigNumber<Base>& BigInteger<Base>::add(const BigNumber<Base>&) {
+
+}
+
+template <unsigned char Base>
+BigNumber<Base>& BigInteger<Base>::subtract(const BigNumber<Base>&) {
+
+}
+
+template <unsigned char Base>
+BigNumber<Base>& BigInteger<Base>::multiply(const BigNumber<Base>&) {
+
+}
+
+template <unsigned char Base>
+BigNumber<Base>& BigInteger<Base>::divide(const BigNumber<Base>&) {
+
+}
+
+template <unsigned char Base>
+BigInteger<Base>::operator BigUnsigned<Base>() {
+
+}
+
+template <unsigned char Base>
+BigInteger<Base>::operator BigInteger<Base>() {
+
+}
+
+template <unsigned char Base>
+BigInteger<Base>::operator Bigrational<Base>() {
+  
+}
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -868,6 +903,7 @@ BigUnsigned<2> BigInteger<2>::GetNumeroCrudo() const {
   }
  }
 
+
 template BigInteger<8> operator/(const BigInteger<8>&, const BigInteger<8>&);
 template std::ostream& operator<<(std::ostream&, const BigInteger<8>&);
 template std::istream& operator>>(std::istream&, BigInteger<8>&);
@@ -881,6 +917,9 @@ template BigInteger<8> operator+(const BigInteger<8>&, const BigInteger<8>&);
 template BigInteger<8> BigInteger<8>::operator-(const BigInteger<8>&) const;
 template BigInteger<8> BigInteger<8>::operator*(const BigInteger<8>&) const;
 template BigInteger<8> BigInteger<8>::operator%(const BigInteger<8>&) const;
+template BigInteger<8>::operator BigUnsigned<8>();
+template BigInteger<8>::operator BigInteger<8>();
+template BigInteger<8>::operator Bigrational<8>();
 
 template BigInteger<10> operator/(const BigInteger<10>&, const BigInteger<10>&);
 template std::ostream& operator<<(std::ostream&, const BigInteger<10>&);

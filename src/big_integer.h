@@ -15,8 +15,10 @@
 #define BIGINTEGER_H
 
 #include <iostream>
+#include "big_number.h"
 #include "big_unsigned.h"
-//#include "big_unsigned.cc"
+
+template<unsigned char Base> class BigRational;
 
 template<unsigned char Base> class BigInteger;
 
@@ -27,7 +29,7 @@ template<unsigned char Base> BigInteger<Base> operator+(const BigInteger<Base>&,
 template<unsigned char Base> BigInteger<Base> operator/(const BigInteger<Base>&, const BigInteger<Base>&);
 
 template <unsigned char Base>
-class BigInteger {
+class BigInteger : public BigNumber<Base> {
  public:
   //BigInteger(unsigned n = 0);
   BigInteger(const unsigned char* );
@@ -59,6 +61,18 @@ class BigInteger {
   BigInteger<Base> operator*(const BigInteger<Base>&) const;
   friend BigInteger<Base> operator/ <>(const BigInteger<Base>&, const BigInteger<Base>&);
   BigInteger<Base> operator%(const BigInteger<Base>&) const;
+  
+  BigNumber<Base>& add(const BigNumber<Base>&) override;
+  BigNumber<Base>& subtract(const BigNumber<Base>&) override;
+  BigNumber<Base>& multiply(const BigNumber<Base>&) override;
+  BigNumber<Base>& divide(const BigNumber<Base>&) override;
+  operator BigUnsigned<Base>() override;
+  operator BigInteger<Base>() override;
+  operator BigRational<Base>() override;
+
+ protected:
+  std::ostream& write(std::ostream&) override;
+  std::istream& read(std::istream&) override;
 
  private:
   BigUnsigned<Base> numero_sin_signo_;
@@ -74,7 +88,7 @@ template<> BigInteger<2> operator+(const BigInteger<2>&, const BigInteger<2>&);
 template<> BigInteger<2> operator/(const BigInteger<2>&, const BigInteger<2>&);
 
 template <>
-class BigInteger<2> {
+class BigInteger<2> : public BigNumber<2> {
  public:
   //BigInteger(unsigned n = 0);
   BigInteger(const unsigned char* );
@@ -117,6 +131,18 @@ class BigInteger<2> {
   BigInteger<2> operator*(const BigInteger<2>&) const;
   friend BigInteger<2> operator/ <>(const BigInteger<2>&, const BigInteger<2>&);
   BigInteger<2> operator%(const BigInteger<2>&) const;
+
+  BigNumber<2>& add(const BigNumber<2>&) override;
+  BigNumber<2>& subtract(const BigNumber<2>&) override;
+  BigNumber<2>& multiply(const BigNumber<2>&) override;
+  BigNumber<2>& divide(const BigNumber<2>&) override;
+  operator BigUnsigned<2>() override;
+  operator BigInteger<2>() override;
+  operator BigRational<2>() override;
+
+ protected:
+  std::ostream& write(std::ostream&) override;
+  std::istream& read(std::istream&) override;
 
  private:
   std::vector<bool> numero_sin_signo_;

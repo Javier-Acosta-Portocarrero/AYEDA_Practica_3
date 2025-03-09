@@ -18,6 +18,13 @@
 #include <vector>
 #include <cstring>
 #include <algorithm>
+#include "big_number.h"
+
+template<unsigned char Base>
+class BigRational;
+
+template<unsigned char Base>
+class BigInteger;
 
 template<unsigned char Base> class BigUnsigned;
 
@@ -61,6 +68,18 @@ class BigUnsigned {
   friend BigUnsigned<Base> operator/ <>(const BigUnsigned<Base>&, const BigUnsigned<Base>&);
   BigUnsigned<Base> operator%(const BigUnsigned<Base>&) const;
   
+  BigNumber<Base>& add(const BigNumber<Base>&) override;
+  BigNumber<Base>& subtract(const BigNumber<Base>&) override;
+  BigNumber<Base>& multiply(const BigNumber<Base>&) override;
+  BigNumber<Base>& divide(const BigNumber<Base>&) override;
+  operator BigUnsigned<Base>() override;
+  operator BigInteger<Base>() override;
+  operator Bigrational<Base>() override;
+
+ protected:
+  std::ostream& write(std::ostream&) override;
+  std::istream& read(std::istream&) override;
+
  private:
   std::vector<unsigned char> numero_unsigned_;
 
