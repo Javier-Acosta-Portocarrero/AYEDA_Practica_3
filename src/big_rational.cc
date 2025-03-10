@@ -228,51 +228,63 @@ bool operator<(const BigRational<Base>& primer_racional, const BigRational<Base>
 }
 
 template <unsigned char Base>
-BigNumber<Base>& BigRational<Base>::add(const BigNumber<Base>& sumador) {
-  BigRational<Base> resultado_suma =  *this + BigRational<Base>::BigRational<Base>(sumador);
+BigNumber<Base>& BigRational<Base>::add(const BigNumber<Base>& sumador) const {
+  BigRational<Base> resultado_suma =  *this + BigRational<Base>(sumador);
   BigNumber<Base>& resultado = resultado_suma;
   return resultado;
 }
 
 template <unsigned char Base>
-BigNumber<Base>& BigRational<Base>::subtract(const BigNumber<Base>& sustraendo) {
-  BigRational<Base> resultado_resta =  *this - BigRational<Base>::BigRational<Base>(sustraendo);
+BigNumber<Base>& BigRational<Base>::subtract(const BigNumber<Base>& sustraendo) const {
+  BigRational<Base> resultado_resta =  *this - BigRational<Base>(sustraendo);
   BigNumber<Base>& resultado = resultado_resta;
   return resultado;
 }
 
 template <unsigned char Base>
-BigNumber<Base>& BigRational<Base>::multiply(const BigNumber<Base>& multiplicador) {
-  BigRational<Base> resultado_mult =  *this * BigRational<Base>::BigRational<Base>(multiplicador);
+BigNumber<Base>& BigRational<Base>::multiply(const BigNumber<Base>& multiplicador) const {
+  BigRational<Base> resultado_mult =  *this * BigRational<Base>(multiplicador);
   BigNumber<Base>& resultado = resultado_mult;
   return resultado;
 }
 
 template <unsigned char Base>
-BigNumber<Base>& BigRational<Base>::divide(const BigNumber<Base>& divisor) {
-  BigRational<Base> resultado_div =  *this / BigRational<Base>::BigRational<Base>(divisor);
+BigNumber<Base>& BigRational<Base>::divide(const BigNumber<Base>& divisor) const {
+  BigRational<Base> resultado_div =  *this / BigRational<Base>(divisor);
   BigNumber<Base>& resultado = resultado_div;
   return resultado;
 }
 
 template <unsigned char Base>
-BigRational<Base>::operator BigUnsigned<Base>() {
+BigRational<Base>::operator BigUnsigned<Base>() const {
   return GetNumerador().GetNumeroCrudo() / GetDenominador();
 }
 
 template <unsigned char Base>
-BigRational<Base>::operator BigInteger<Base>() {
+BigRational<Base>::operator BigInteger<Base>() const {
   return GetNumerador() / BigInteger<Base>{GetDenominador()};
 }
 
 template <unsigned char Base>
-BigRational<Base>::operator BigRational<Base>() {
+BigRational<Base>::operator BigRational<Base>() const {
   return *this;
 }
 
-template BigRational<2>::operator BigUnsigned<2>();
-template BigRational<2>::operator BigInteger<2>();
-template BigRational<2>::operator BigRational<2>();
+template <unsigned char Base>
+std::ostream& BigRational<Base>::write(std::ostream& out) const {
+  out << *this;
+  return out;
+}
+
+template <unsigned char Base>
+std::istream& BigRational<Base>::read(std::istream& in) {
+  in >> *this;
+  return in;
+}
+
+template BigRational<2>::operator BigUnsigned<2>() const;
+template BigRational<2>::operator BigInteger<2>() const;
+template BigRational<2>::operator BigRational<2>() const;
 template std::ostream& operator<<(std::ostream&, const BigRational<2>&);
 template std::istream& operator>>(std::istream&, BigRational<2>&);
 template bool operator<(const BigRational<2>&, const BigRational<2>&);
@@ -282,9 +294,9 @@ template BigRational<2> BigRational<2>::operator-(const BigRational<2>&) const;
 template BigRational<2> BigRational<2>::operator*(const BigRational<2>&) const;
 template bool BigRational<2>::operator==(const BigRational<2>&) const;
 
-template BigRational<8>::operator BigUnsigned<8>();
-template BigRational<8>::operator BigInteger<8>();
-template BigRational<8>::operator BigRational<8>();
+template BigRational<8>::operator BigUnsigned<8>() const;
+template BigRational<8>::operator BigInteger<8>() const;
+template BigRational<8>::operator BigRational<8>() const;
 template std::ostream& operator<<(std::ostream&, const BigRational<8>&);
 template std::istream& operator>>(std::istream&, BigRational<8>&);
 template bool operator<(const BigRational<8>&, const BigRational<8>&);
@@ -294,9 +306,9 @@ template BigRational<8> BigRational<8>::operator-(const BigRational<8>&) const;
 template BigRational<8> BigRational<8>::operator*(const BigRational<8>&) const;
 template bool BigRational<8>::operator==(const BigRational<8>&) const;
 
-template BigRational<10>::operator BigUnsigned<10>();
-template BigRational<10>::operator BigInteger<10>();
-template BigRational<10>::operator BigRational<10>();
+template BigRational<10>::operator BigUnsigned<10>() const;
+template BigRational<10>::operator BigInteger<10>() const;
+template BigRational<10>::operator BigRational<10>() const;
 template std::ostream& operator<<(std::ostream&, const BigRational<10>&);
 template std::istream& operator>>(std::istream&, BigRational<10>&);
 template bool operator<(const BigRational<10>&, const BigRational<10>&);
@@ -306,9 +318,9 @@ template BigRational<10> BigRational<10>::operator-(const BigRational<10>&) cons
 template BigRational<10> BigRational<10>::operator*(const BigRational<10>&) const;
 template bool BigRational<10>::operator==(const BigRational<10>&) const;
 
-template BigRational<16>::operator BigUnsigned<16>();
-template BigRational<16>::operator BigInteger<16>();
-template BigRational<16>::operator BigRational<16>();
+template BigRational<16>::operator BigUnsigned<16>() const;
+template BigRational<16>::operator BigInteger<16>() const;
+template BigRational<16>::operator BigRational<16>() const;
 template std::ostream& operator<<(std::ostream&, const BigRational<16>&);
 template std::istream& operator>>(std::istream&, BigRational<16>&);
 template bool operator<(const BigRational<16>&, const BigRational<16>&);

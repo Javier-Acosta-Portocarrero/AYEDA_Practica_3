@@ -11,7 +11,7 @@ template<unsigned char Base> class BigRational;
 template<unsigned char Base> class BigNumber;
 
 template<unsigned char Base> std::istream& operator>>(std::istream&, BigNumber<Base>&);
-template<unsigned char Base> std::ostream& operator<<(std::ostream&, BigNumber<Base>&);
+template<unsigned char Base> std::ostream& operator<<(std::ostream&, const BigNumber<Base>&);
 
 template <unsigned char Base>
 class BigNumber {
@@ -24,19 +24,19 @@ class BigNumber {
   virtual operator BigInteger<Base>() const = 0;
   virtual operator BigRational<Base>() const = 0;
 
-  friend std::ostream& operator<<(std::ostream&, const BigNumber<Base>&);
-  friend std::istream& operator>>(std::istream&, BigNumber<Base>&);
+  friend std::ostream& operator<< <>(std::ostream&, const BigNumber<Base>&);
+  friend std::istream& operator>> <>(std::istream&, BigNumber<Base>&);
 
   static BigNumber<Base>* create(const char* cadena_cruda) {
     std::string cadena{cadena_cruda};
     if (cadena[cadena.size() - 1] == 'i') {
-      BigNumber<Base>* resultado = new BigInteger<Base>{cadena.substr(0, cadnea.size() - 1).c_str()};
+      BigNumber<Base>* resultado = new BigInteger<Base>{cadena.substr(0, cadena.size() - 1).c_str()};
       return resultado;
     } else if (cadena[cadena.size() - 1] == 'u') {
-      BigNumber<Base>* resultado = new BigInteger<Base>{cadena.substr(0, cadnea.size() - 1).c_str()};
+      BigNumber<Base>* resultado = new BigInteger<Base>{cadena.substr(0, cadena.size() - 1).c_str()};
       return resultado;
     } else if (cadena[cadena.size() - 1] == 'r') {
-      BigNumber<Base>* resultado = new BigRational<Base>{cadena.substr(0, cadnea.size() - 1).c_str()};
+      BigNumber<Base>* resultado = new BigRational<Base>{cadena.substr(0, cadena.size() - 1).c_str()};
       return resultado;
     } else { 
       std::cerr << "Foramto de big number no valido \n";

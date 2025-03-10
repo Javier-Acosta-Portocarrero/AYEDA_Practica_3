@@ -62,16 +62,16 @@ class BigInteger : public BigNumber<Base> {
   friend BigInteger<Base> operator/ <>(const BigInteger<Base>&, const BigInteger<Base>&);
   BigInteger<Base> operator%(const BigInteger<Base>&) const;
   
-  BigNumber<Base>& add(const BigNumber<Base>&) override;
-  BigNumber<Base>& subtract(const BigNumber<Base>&) override;
-  BigNumber<Base>& multiply(const BigNumber<Base>&) override;
-  BigNumber<Base>& divide(const BigNumber<Base>&) override;
-  operator BigUnsigned<Base>() override;
-  operator BigInteger<Base>() override;
-  operator BigRational<Base>() override;
+  BigNumber<Base>& add(const BigNumber<Base>&) const override;
+  BigNumber<Base>& subtract(const BigNumber<Base>&) const override;
+  BigNumber<Base>& multiply(const BigNumber<Base>&) const override;
+  BigNumber<Base>& divide(const BigNumber<Base>&) const override;
+  operator BigUnsigned<Base>() const override;
+  operator BigInteger<Base>() const override;
+  operator BigRational<Base>() const override;
 
  protected:
-  std::ostream& write(std::ostream&) override;
+  std::ostream& write(std::ostream&) const override;
   std::istream& read(std::istream&) override;
 
  private:
@@ -132,16 +132,16 @@ class BigInteger<2> : public BigNumber<2> {
   friend BigInteger<2> operator/ <>(const BigInteger<2>&, const BigInteger<2>&);
   BigInteger<2> operator%(const BigInteger<2>&) const;
 
-  BigNumber<2>& add(const BigNumber<2>&) override;
-  BigNumber<2>& subtract(const BigNumber<2>&) override;
-  BigNumber<2>& multiply(const BigNumber<2>&) override;
-  BigNumber<2>& divide(const BigNumber<2>&) override;
-  operator BigUnsigned<2>() override;
-  operator BigInteger<2>() override;
-  operator BigRational<2>() override;
+  BigNumber<2>& add(const BigNumber<2>&) const override;
+  BigNumber<2>& subtract(const BigNumber<2>&) const override;
+  BigNumber<2>& multiply(const BigNumber<2>&) const override;
+  BigNumber<2>& divide(const BigNumber<2>&) const override;
+  operator BigUnsigned<2>() const override;
+  operator BigInteger<2>() const override;
+  operator BigRational<2>() const override;
 
  protected:
-  std::ostream& write(std::ostream&) override;
+  std::ostream& write(std::ostream&) const override;
   std::istream& read(std::istream&) override;
 
  private:

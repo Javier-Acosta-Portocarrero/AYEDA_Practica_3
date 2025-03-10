@@ -12,6 +12,9 @@
 // para realizar operaciones con números enteros sin signo de gran tamaño.
 
 #include "big_unsigned.h"
+#include "big_rational.h"
+#include "big_integer.h"
+
 
 /**
  * @brief Constructor que inicializa un BigUnsigned a partir de un entero sin signo.
@@ -507,49 +510,63 @@ void BigUnsigned<Base>::FormatearNumero() {
 }
 
 template <unsigned char Base>
-BigNumber<Base>& BigUnsigned<Base>::add(const BigNumber<Base>& sumador) {
-  BigUnsigned<Base> resultado_suma =  *this + BigUnsigned<Base>::BigUnsigned<Base>(sumador);
+BigNumber<Base>& BigUnsigned<Base>::add(const BigNumber<Base>& sumador) const {
+  BigUnsigned<Base> resultado_suma =  *this + BigUnsigned<Base>(sumador);
   BigNumber<Base>& resultado = resultado_suma;
   return resultado;
 }
 
 template <unsigned char Base>
-BigNumber<Base>& BigUnsigned<Base>::subtract(const BigNumber<Base>& sustraendo) {
-  BigUnsigned<Base> resultado_resta =  *this - BigUnsigned<Base>::BigUnsigned<Base>(sustraendo);
+BigNumber<Base>& BigUnsigned<Base>::subtract(const BigNumber<Base>& sustraendo) const {
+  BigUnsigned<Base> resultado_resta =  *this - BigUnsigned<Base>(sustraendo);
   BigNumber<Base>& resultado = resultado_resta;
   return resultado;
 }
 
 template <unsigned char Base>
-BigNumber<Base>& BigUnsigned<Base>::multiply(const BigNumber<Base>& multiplicador) {
-  BigUnsigned<Base> resultado_mult =  *this * BigUnsigned<Base>::BigUnsigned<Base>(multiplicador);
+BigNumber<Base>& BigUnsigned<Base>::multiply(const BigNumber<Base>& multiplicador) const {
+  BigUnsigned<Base> resultado_mult =  *this * BigUnsigned<Base>(multiplicador);
   BigNumber<Base>& resultado = resultado_mult;
   return resultado;
 }
 
 template <unsigned char Base>
-BigNumber<Base>& BigUnsigned<Base>::divide(const BigNumber<Base>& divisor) {
-  BigUnsigned<Base> resultado_div =  *this / BigUnsigned<Base>::BigUnsigned<Base>(divisor);
+BigNumber<Base>& BigUnsigned<Base>::divide(const BigNumber<Base>& divisor) const {
+  BigUnsigned<Base> resultado_div =  *this / BigUnsigned<Base>(divisor);
   BigNumber<Base>& resultado = resultado_div;
   return resultado;
 }
 
 template <unsigned char Base>
-BigUnsigned<Base>::operator BigUnsigned<Base>() {
+BigUnsigned<Base>::operator BigUnsigned<Base>() const {
   return *this;
 }
 
 template <unsigned char Base>
-BigUnsigned<Base>::operator BigInteger<Base>() {
+BigUnsigned<Base>::operator BigInteger<Base>() const {
   return BigInteger<Base>{*this};
 }
 
 template <unsigned char Base>
-BigUnsigned<Base>::operator BigRational<Base>() {
+BigUnsigned<Base>::operator BigRational<Base>() const {
   return BigRational<Base>{BigInteger<Base>{*this}, 1};
 }
 
+template <unsigned char Base>
+std::ostream& BigUnsigned<Base>::write(std::ostream& out) const {
+  out << *this;
+  return out;
+}
 
+template <unsigned char Base>
+std::istream& BigUnsigned<Base>::read(std::istream& in) {
+  in >> *this;
+  return in;
+}
+
+template BigUnsigned<2>::operator BigUnsigned<2>() const;
+template BigUnsigned<2>::operator BigInteger<2>() const;
+template BigUnsigned<2>::operator BigRational<2>() const;
 template std::ostream& operator<<(std::ostream&, const BigUnsigned<2>&);
 template std::istream& operator>>(std::istream&, BigUnsigned<2>&);
 template bool operator<(const BigUnsigned<2>&, const BigUnsigned<2>&);
@@ -564,6 +581,9 @@ template BigUnsigned<2>& BigUnsigned<2>::operator--();
 template BigUnsigned<2> BigUnsigned<2>::operator--(int); 
 template bool BigUnsigned<2>::operator==(const BigUnsigned<2>&) const;
 
+template BigUnsigned<8>::operator BigUnsigned<8>() const;
+template BigUnsigned<8>::operator BigInteger<8>() const;
+template BigUnsigned<8>::operator BigRational<8>() const;
 template std::ostream& operator<<(std::ostream&, const BigUnsigned<8>&);
 template std::istream& operator>>(std::istream&, BigUnsigned<8>&);
 template bool operator<(const BigUnsigned<8>&, const BigUnsigned<8>&);
@@ -578,6 +598,9 @@ template BigUnsigned<8>& BigUnsigned<8>::operator--();
 template BigUnsigned<8> BigUnsigned<8>::operator--(int); 
 template bool BigUnsigned<8>::operator==(const BigUnsigned<8>&) const;
 
+template BigUnsigned<10>::operator BigUnsigned<10>() const;
+template BigUnsigned<10>::operator BigInteger<10>() const;
+template BigUnsigned<10>::operator BigRational<10>() const;
 template std::ostream& operator<<(std::ostream&, const BigUnsigned<10>&);
 template std::istream& operator>>(std::istream&, BigUnsigned<10>&);
 template bool operator<(const BigUnsigned<10>&, const BigUnsigned<10>&);
@@ -592,6 +615,9 @@ template BigUnsigned<10>& BigUnsigned<10>::operator--();
 template BigUnsigned<10> BigUnsigned<10>::operator--(int); 
 template bool BigUnsigned<10>::operator==(const BigUnsigned<10>&) const;
 
+template BigUnsigned<16>::operator BigUnsigned<16>() const;
+template BigUnsigned<16>::operator BigInteger<16>() const;
+template BigUnsigned<16>::operator BigRational<16>() const;
 template std::ostream& operator<<(std::ostream&, const BigUnsigned<16>&);
 template std::istream& operator>>(std::istream&, BigUnsigned<16>&);
 template bool operator<(const BigUnsigned<16>&, const BigUnsigned<16>&);

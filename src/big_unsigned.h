@@ -68,16 +68,16 @@ class BigUnsigned : public BigNumber<Base> {
   friend BigUnsigned<Base> operator/ <>(const BigUnsigned<Base>&, const BigUnsigned<Base>&);
   BigUnsigned<Base> operator%(const BigUnsigned<Base>&) const;
   
-  BigNumber<Base>& add(const BigNumber<Base>&) override;
-  BigNumber<Base>& subtract(const BigNumber<Base>&) override;
-  BigNumber<Base>& multiply(const BigNumber<Base>&) override;
-  BigNumber<Base>& divide(const BigNumber<Base>&) override;
-  operator BigUnsigned<Base>() override;
-  operator BigInteger<Base>() override;
-  operator BigRational<Base>() override;
+  BigNumber<Base>& add(const BigNumber<Base>&) const override;
+  BigNumber<Base>& subtract(const BigNumber<Base>&) const override;
+  BigNumber<Base>& multiply(const BigNumber<Base>&) const override;
+  BigNumber<Base>& divide(const BigNumber<Base>&) const override;
+  operator BigUnsigned<Base>() const override;
+  operator BigInteger<Base>() const override;
+  operator BigRational<Base>() const override;
 
  protected:
-  std::ostream& write(std::ostream&) override;
+  std::ostream& write(std::ostream&) const override;
   std::istream& read(std::istream&) override;
 
  private:
