@@ -17,6 +17,7 @@
 #include <iostream>
 #include "big_number.h"
 #include "big_unsigned.h"
+#include "big_rational.h"
 
 template<unsigned char Base> class BigRational;
 
@@ -32,14 +33,14 @@ template <unsigned char Base>
 class BigInteger : public BigNumber<Base> {
  public:
   //BigInteger(unsigned n = 0);
-  BigInteger(const unsigned char* );
+  explicit BigInteger(const unsigned char* );
   BigInteger(const BigInteger<Base>& copia); // Constructor de copia
-  BigInteger(int n = 0);
-  BigInteger(const BigUnsigned<Base>&); // Constructor de cambio de tipo  
+  explicit BigInteger(int n = 0);
+  explicit BigInteger(const BigUnsigned<Base>&); // Constructor de cambio de tipo  
 
   bool EsPositivo() const { return positivo_;}
   void SetPositivo(bool es_positivo) { positivo_ = es_positivo;}
-  BigUnsigned<Base> GetNumeroCrudo() const { return numero_sin_signo_;}
+  BigUnsigned<Base> GetNumeroCrudo() const { return BigUnsigned<Base>{numero_sin_signo_};}
   void LimpiarNumero() { numero_sin_signo_.LimpiarNumero();}
   void CambiarSigno() { positivo_ = !positivo_;}
 

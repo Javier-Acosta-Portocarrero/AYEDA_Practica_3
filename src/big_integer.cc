@@ -12,7 +12,7 @@
 // para realizar operaciones con números enteros con signo de gran tamaño.
 
 #include "big_integer.h"
-#include "big_rational.h"
+#include "excepcion.h"
 
 /**
  * @brief Constructor que inicializa un BigUnsigned a partir de un número entero con signo.
@@ -50,6 +50,7 @@ BigInteger<Base>::BigInteger(const BigUnsigned<Base>& numero_crudo) { // Constru
 
 template <unsigned char Base>
 BigInteger<Base>::BigInteger(const unsigned char* entrada) {
+  //std::cout << "hola" << entrada << std::endl;
   if (entrada) {
     if (entrada[0] == '+') {
       positivo_ = true;
@@ -101,6 +102,7 @@ BigInteger<Base>& BigInteger<Base>::operator=(const BigInteger<Base>& copia) {
 
 template <unsigned char Base>
 std::ostream& operator<<(std::ostream& out, const BigInteger<Base>& entero_a_escribir) {
+  std::cout << "PROBLEMA << INTEGER \n";
   out << (entero_a_escribir.positivo_? '+' : '-') << entero_a_escribir.numero_sin_signo_;
   return out;
 }
@@ -333,29 +335,30 @@ BigInteger<Base> BigInteger<Base>::operator%(const BigInteger<Base>& divisor) co
 
 template <unsigned char Base>
 BigNumber<Base>& BigInteger<Base>::add(const BigNumber<Base>& sumador) const {
+  std::cout << "1111111111117 \n";
   BigInteger<Base> resultado_suma =  *this + BigInteger<Base>(sumador);
-  BigNumber<Base>& resultado = resultado_suma;
+  static BigNumber<Base>& resultado = resultado_suma;
   return resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigInteger<Base>::subtract(const BigNumber<Base>& sustraendo) const {
   BigInteger<Base> resultado_resta =  *this - BigInteger<Base>(sustraendo);
-  BigNumber<Base>& resultado = resultado_resta;
+  static BigNumber<Base>& resultado = resultado_resta;
   return resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigInteger<Base>::multiply(const BigNumber<Base>& multiplicador) const {
   BigInteger<Base> resultado_mult =  *this * BigInteger<Base>(multiplicador);
-  BigNumber<Base>& resultado = resultado_mult;
+  static BigNumber<Base>& resultado = resultado_mult;
   return resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigInteger<Base>::divide(const BigNumber<Base>& divisor) const {
   BigInteger<Base> resultado_div =  *this / BigInteger<Base>(divisor);
-  BigNumber<Base>& resultado = resultado_div;
+  static BigNumber<Base>& resultado = resultado_div;
   return resultado;
 }
 
@@ -371,12 +374,14 @@ BigInteger<Base>::operator BigInteger<Base>() const {
 
 template <unsigned char Base>
 BigInteger<Base>::operator BigRational<Base>() const {
-  return BigRational<Base>{*this, 1};
+  return BigRational<Base>{*this, BigUnsigned<Base>{unsigned(1)}};
 }
 
 template <unsigned char Base>
 std::ostream& BigInteger<Base>::write(std::ostream& out) const {
-  out << *this;
+  std::cout << "3a \n";
+  out << *this << "i";
+  std::cout << "4a \n";
   return out;
 }
 
@@ -496,14 +501,12 @@ BigInteger<2>::BigInteger(const unsigned char* entrada) {
         if (entrada[i] >= '0' && entrada[i] <= '9') {
           valor_real = entrada[i] - '0';
         } else {
-          std::cerr << "Se han encontarado simbolos fuera de rango en la entrada, seran ignorados."
-                    << std::endl;
-          continue;
+          throw BigNumberBadDigit("Se han encontarado simbolos no validos en la entrada.");
+          //continue;
         } 
         if (valor_real >= 2) {
-          std::cerr << "Se ha introducido un valor que se sale de rango de la base indicada, se ignorara"
-                    <<  " este digito" << std::endl;
-          continue;
+          throw BigNumberBadDigit("Se ha introducido un valor que se sale de rango de la base indicada.");
+          //continue;
         }
         numero_sin_signo_.emplace_back(valor_real);
       } 
@@ -819,8 +822,8 @@ BigInteger<2> BigInteger<2>::operator*(const BigInteger<2>& multiplicador) const
 template <>
 BigInteger<2> operator/(const BigInteger<2>& dividendo, const BigInteger<2>& divisor) {
   if (divisor == BigInteger<2>{int(0)}) {
-    std::cerr << "No se puede dividir entre 0" << std::endl;
-    return BigInteger<2>{int(0)};
+    throw BigNumberDivisionByZero();
+    //return BigInteger<2>{int(0)};
   } else if (divisor == BigInteger<2>{int(1)}) {
     return dividendo;
   }
@@ -861,8 +864,8 @@ BigInteger<2> operator/(const BigInteger<2>& dividendo, const BigInteger<2>& div
 
 BigInteger<2> BigInteger<2>::operator%(const BigInteger<2>& divisor) const {
   if (divisor == BigInteger<2>{int(0)}) {
-    std::cerr << "No se puede dividir entre 0" << std::endl;
-    return BigInteger<2>{int(0)};
+    throw BigNumberDivisionByZero();
+    //return BigInteger<2>{int(0)};
   } else if (divisor == BigInteger<2>{int(1)}) {
     return BigInteger<2>{int(0)};
   }
@@ -924,26 +927,27 @@ BigUnsigned<2> BigInteger<2>::GetNumeroCrudo() const {
  }
 
 BigNumber<2>& BigInteger<2>::add(const BigNumber<2>& sumador) const {
+  std::cout << "1111111111117 \n";
   BigInteger<2> resultado_suma =  *this + BigInteger<2>(sumador);
-  BigNumber<2>& resultado = resultado_suma;
+  static BigNumber<2>& resultado = resultado_suma;
   return resultado;
 }
 
 BigNumber<2>& BigInteger<2>::subtract(const BigNumber<2>& sustraendo) const {
   BigInteger<2> resultado_resta =  *this - BigInteger<2>(sustraendo);
-  BigNumber<2>& resultado = resultado_resta;
+  static BigNumber<2>& resultado = resultado_resta;
   return resultado;
 }
 
 BigNumber<2>& BigInteger<2>::multiply(const BigNumber<2>& multiplicador) const {
   BigInteger<2> resultado_mult =  *this * BigInteger<2>(multiplicador);
-  BigNumber<2>& resultado = resultado_mult;
+  static BigNumber<2>& resultado = resultado_mult;
   return resultado;
 }
 
 BigNumber<2>& BigInteger<2>::divide(const BigNumber<2>& divisor) const {
   BigInteger<2> resultado_div =  *this / BigInteger<2>(divisor);
-  BigNumber<2>& resultado = resultado_div;
+  static BigNumber<2>& resultado = resultado_div;
   return resultado;
 }
 
@@ -957,11 +961,11 @@ BigInteger<2>::operator BigInteger<2>() const {
 }
 
 BigInteger<2>::operator BigRational<2>() const {
-  return BigRational<2>{*this, 1};
+  return BigRational<2>{*this, BigUnsigned<2>{unsigned(1)}};
 }
 
 std::ostream& BigInteger<2>::write(std::ostream& out) const {
-  out << *this;
+  out << *this << "i";
   return out;
 }
 

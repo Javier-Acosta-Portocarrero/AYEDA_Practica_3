@@ -12,6 +12,7 @@
 // para realizar operaciones con racionales de gran tamano.
 
 #include "big_rational.h"
+#include "excepcion.h"
 
 /**
  * @brief Método para simplificar la fracción reduciendo el numerador y denominador por su MCD.
@@ -35,8 +36,8 @@ template <unsigned char Base>
 BigRational<Base>::BigRational(const BigInteger<Base>& numerador, const BigUnsigned<Base>& denominador) 
                                     : numerador_{numerador}, denominador_{denominador} {
   if (denominador_ == BigUnsigned<Base>(unsigned(0))) {
-    std::cerr << "El denominador no puede ser 0, sera sustituido por 1" << std::endl;
-    denominador_ = BigUnsigned<Base>{unsigned(1)};
+    throw BigNumberBadDigit("El denominador no puede ser 0, ya que nos se puede dividir por 0.");
+    //denominador_ = BigUnsigned<Base>{unsigned(1)};
   }
   Simplificar();
 }
@@ -50,9 +51,13 @@ BigRational<Base>::BigRational(const BigInteger<Base>& numerador, const BigUnsig
 template <unsigned char Base>
 BigRational<Base>::BigRational(const unsigned char* entrada) {
   if (entrada) {
-    numerador_ = BigUnsigned<Base>{entrada};
+    std::string cadena_moderna{reinterpret_cast<const char*>(entrada)};
+    int posicion_operador = cadena_moderna.find('/');
+    numerador_ = BigInteger<Base>{reinterpret_cast<const unsigned char*>(cadena_moderna.substr(0, posicion_operador - 1).c_str())};
+    numerador_ = BigInteger<Base>{reinterpret_cast<const unsigned char*>(cadena_moderna.substr(posicion_operador + 1, cadena_moderna.size() - 1).c_str())};
   } else {
-    numerador_ = BigUnsigned<Base>{unsigned(0)};
+    numerador_ = BigInteger<Base>{int(0)};
+    denominador_ = BigUnsigned<Base>{unsigned(1)};
   }
 }
 
@@ -110,14 +115,13 @@ std::istream& operator>>(std::istream& in, BigRational<Base>& racional_a_leer) {
   in >> racional_a_leer.numerador_;
   in >> signo_division;
   if (signo_division != '/') {
-    std::cerr << "Se ha introducido un simbolo distinto del de la division al leer una fraccion"
-              << " por lo que solo se tendrá en cuenta el numerador, siendo el denominador 1. \n";
-    return in;
+    throw BigNumberBadDigit("Se ha introducido un simbolo distinto del de la division al leer una fraccion.");
+    //return in;
   }
   in >> racional_a_leer.denominador_;
   if (racional_a_leer.denominador_ == BigUnsigned<Base>{unsigned(0)}) {
-    std::cerr << "El denominador no puede ser 0 sera sustituido por 1" << std::endl;
-    racional_a_leer.denominador_ = BigUnsigned<Base>{unsigned(1)};
+    throw BigNumberBadDigit("El denominador no puede ser 0, ya que nos se puede dividir por 0.");
+    //racional_a_leer.denominador_ = BigUnsigned<Base>{unsigned(1)};
   }
   racional_a_leer.Simplificar();
   return in;
@@ -230,28 +234,28 @@ bool operator<(const BigRational<Base>& primer_racional, const BigRational<Base>
 template <unsigned char Base>
 BigNumber<Base>& BigRational<Base>::add(const BigNumber<Base>& sumador) const {
   BigRational<Base> resultado_suma =  *this + BigRational<Base>(sumador);
-  BigNumber<Base>& resultado = resultado_suma;
+  static BigNumber<Base>& resultado = resultado_suma;
   return resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigRational<Base>::subtract(const BigNumber<Base>& sustraendo) const {
   BigRational<Base> resultado_resta =  *this - BigRational<Base>(sustraendo);
-  BigNumber<Base>& resultado = resultado_resta;
+  static BigNumber<Base>& resultado = resultado_resta;
   return resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigRational<Base>::multiply(const BigNumber<Base>& multiplicador) const {
   BigRational<Base> resultado_mult =  *this * BigRational<Base>(multiplicador);
-  BigNumber<Base>& resultado = resultado_mult;
+  static BigNumber<Base>& resultado = resultado_mult;
   return resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigRational<Base>::divide(const BigNumber<Base>& divisor) const {
   BigRational<Base> resultado_div =  *this / BigRational<Base>(divisor);
-  BigNumber<Base>& resultado = resultado_div;
+  static BigNumber<Base>& resultado = resultado_div;
   return resultado;
 }
 
@@ -272,7 +276,8 @@ BigRational<Base>::operator BigRational<Base>() const {
 
 template <unsigned char Base>
 std::ostream& BigRational<Base>::write(std::ostream& out) const {
-  out << *this;
+  std::cout << "3a \n"; 
+  out << *this << "r";
   return out;
 }
 
@@ -329,3 +334,8 @@ template BigRational<16> operator/(const BigRational<16>&, const BigRational<16>
 template BigRational<16> BigRational<16>::operator-(const BigRational<16>&) const;
 template BigRational<16> BigRational<16>::operator*(const BigRational<16>&) const;
 template bool BigRational<16>::operator==(const BigRational<16>&) const;
+
+template class BigRational<2>;
+template class BigRational<8>;
+template class BigRational<10>;
+template class BigRational<16>;

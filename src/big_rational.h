@@ -15,8 +15,9 @@
 #define BIG_RATIONAL_H
 
 #include <iostream>
-#include "big_number.h"
+#include "big_unsigned.h"
 #include "big_integer.h"
+#include "big_number.h"
 #include "funciones.h"
 
 template<unsigned char Base> class BigRational;
@@ -30,8 +31,8 @@ template<unsigned char Base> BigRational<Base> operator+(const BigRational<Base>
 template <unsigned char Base>
 class BigRational : public BigNumber<Base> {
  public:
-  BigRational(const BigInteger<Base>& numerador = BigInteger<Base>{int(0)}, const BigUnsigned<Base>& denominador = 1);
-  BigRational(const unsigned char* );
+  explicit BigRational(const BigInteger<Base>& numerador = BigInteger<Base>{int(0)}, const BigUnsigned<Base>& denominador = 1);
+  explicit BigRational(const unsigned char* );
   BigRational(const BigRational<Base>& copia); // Constructor de copia
 
   BigInteger<Base> GetNumerador() const { return numerador_;}

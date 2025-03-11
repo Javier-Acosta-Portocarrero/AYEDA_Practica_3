@@ -53,8 +53,52 @@ BigInteger<2> MCD(const BigInteger<2>& primer_entero, const BigInteger<2>& segun
   }
 }
 
+template <unsigned char Base>
+BigNumber<Base>* Calculadora(BigNumber<Base>& primer_operando, BigNumber<Base>& segundo_operando, unsigned char signo) {
+  BigNumber<Base>* resultado;
+  std::cout << "1111111111114 \n";
+  switch (signo) {
+    case '+':
+      std::cout << primer_operando << std::endl;
+      std::cout << "111111111111b \n";
+      resultado = &primer_operando.add(segundo_operando);
+      std::cout << "111111111111c \n";
+      break;
+    case '-':
+      resultado = &primer_operando.subtract(segundo_operando);
+      break;
+    case '*':
+      resultado = &primer_operando.multiply(segundo_operando);
+      break;
+    case '/':
+      resultado = &primer_operando.divide(segundo_operando);
+      break;
+    default:
+      std::cout << "1111111111116 \n";
+      throw BigNumberBadDigit("Signo de operacion no valido.");
+  }
+  std::cout << "1111111111115 \n";
+  return resultado;
+}
+
+template <unsigned char Base>
+void MostrarResultados(std::ostream& out, const std::unordered_map<std::string, BigNumber<Base>*>& resultados) {
+  for (const auto& par : resultados) {
+    out << par.first << " = " << par.second << std::endl;
+  }
+}
+
 //template BigInteger<2> MCD(const BigInteger<2>& primer_entero, const BigInteger<2>& segundo_entero);
 template BigInteger<8> MCD(const BigInteger<8>& primer_entero, const BigInteger<8>& segundo_entero);
 template BigInteger<10> MCD(const BigInteger<10>& primer_entero, const BigInteger<10>& segundo_entero);
 template BigInteger<16> MCD(const BigInteger<16>& primer_entero, const BigInteger<16>& segundo_entero);
 
+template void MostrarResultados(std::ostream& out, const std::unordered_map<std::string, BigNumber<2>*>& resultados);
+template void MostrarResultados(std::ostream& out, const std::unordered_map<std::string, BigNumber<8>*>& resultados);
+template void MostrarResultados(std::ostream& out, const std::unordered_map<std::string, BigNumber<10>*>& resultados);
+template void MostrarResultados(std::ostream& out, const std::unordered_map<std::string, BigNumber<16>*>& resultados);
+
+template BigNumber<2>* Calculadora(BigNumber<2>& primer_operando, BigNumber<2>& segundo_operando, unsigned char signo);
+template BigNumber<8>* Calculadora(BigNumber<8>& primer_operando, BigNumber<8>& segundo_operando, unsigned char signo);
+template BigNumber<10>* Calculadora(BigNumber<10>& primer_operando, BigNumber<10>& segundo_operando, unsigned char signo);
+template BigNumber<16>* Calculadora(BigNumber<16>& primer_operando, BigNumber<16>& segundo_operando, unsigned char signo);

@@ -13,10 +13,23 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "big_rational.h"
+#include <unordered_map>
+#include "big_number.h"
 #include "funciones.h"
 
 int main() {
+  BigInteger<16> prueba1{int(37)};
+  BigNumber<16>& pruebaa = prueba1;
+  std::cin >> pruebaa;
+  std::cout << "IIII " << pruebaa << std::endl;
+
+  BigInteger<16> prueba2{unsigned(37)};
+  BigNumber<16>& pruebaa2 = prueba2;
+  std::cout << pruebaa2 << std::endl;
+
+  std::cout << BigInteger<16>(pruebaa2) << std::endl;
+  //std::cout << pruebaa.add(pruebaa2) << std::endl;
+  /* 
   std::string fichero_entrada, fichero_salida;
   std::cout << "Escribe el nombre del fichero de entrada: ";
   std::cin >> fichero_entrada;
@@ -66,263 +79,265 @@ int main() {
   }
 
   if (base == 2) {
-    BigRational<2> racional_primero;
-    BigRational<2> racional_segundo;
-    std::getline(flujo_fichero_entrada, linea);
-    flujo_linea.clear();
-    flujo_linea.str(linea);
-    std::string nombre_primer_racional, nombre_segundo_racional;
-    if (!(flujo_linea >> nombre_primer_racional)) {
-      std::cerr << "EL formato de la segunda linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
+    std::unordered_map<std::string, BigNumber<2>*> board;
+    int contador_linea{1};
+    while (std::getline(flujo_fichero_entrada, linea)) {
+      ++contador_linea;
+      flujo_linea.clear();
+      flujo_linea.str(linea);
+      std::string nombre_numero_grande;
+      if ((!(flujo_linea >> nombre_numero_grande)) || !(flujo_linea >> cadena_temporal)) {
+        std::cerr << "EL formato de una de las lineas no es correcto (Nombre = X / Y o NOmbre ? X x Y)" << std::endl;
+        flujo_fichero_entrada.close();
+        flujo_fichero_salida.close();
+        return 1;
+      }
+
+      if (cadena_temporal == "=") {
+        BigNumber<2>* numero_grande;
+        try {
+          flujo_linea >> *numero_grande;
+          board[nombre_numero_grande] = numero_grande;
+        } catch (BigNumberBadDigit& error_entrada) {
+          BigNumber<2>* cero = new BigInteger<2>{0};
+          board[nombre_numero_grande] = cero;
+          std::cerr << error_entrada.what() << std::endl;
+          continue;
+        } catch (BigNumberDivisionByZero& error_division) {
+          std::cerr << error_division.what() << std::endl;
+          BigNumber<2>* cero = new BigInteger<2>{0};
+          board[nombre_numero_grande] = cero;
+          continue;
+        } catch (...) {
+          std::cerr << "Ha sucedido un error al ejecutar el programa, se abortara la ejecucion. \n";
+          return 1;
+        }
+      } else if (cadena_temporal == "?") {
+        std::string nombre_primer_operando, nombre_segundo_operando;
+        unsigned char operador;
+        //BigNumber<2>* numero_grande;
+        try {
+          flujo_linea >> nombre_primer_operando >> nombre_segundo_operando >> operador;
+          BigNumber<2>* primer_operando = board.at(nombre_primer_operando);
+          BigNumber<2>* segundo_operando = board.at(nombre_segundo_operando);
+          board[nombre_numero_grande] = Calculadora(*primer_operando, *segundo_operando, operador);
+        } catch (BigNumberBadDigit& error_entrada) {
+          BigNumber<2>* cero = new BigInteger<2>{0};
+          board[nombre_numero_grande] = cero;
+          std::cerr << error_entrada.what() << std::endl;
+          continue;
+        } catch (BigNumberDivisionByZero& error_division) {
+          std::cerr << error_division.what() << std::endl;
+          BigNumber<2>* cero = new BigInteger<2>{0};
+          board[nombre_numero_grande] = cero;
+          continue;
+        } catch (...) {
+          std::cerr << "Ha sucedido un error al ejecutar el programa, se abortara la ejecucion. \n";
+          return 1;
+        }
+      } else {
+        std::cerr << "Se ha introducido un operador no valido en la linea " << contador_linea << ", sera omitida. \n";
+        continue;
+      }
     }
-    if (!(flujo_linea >> cadena_temporal) || !(cadena_temporal == "=")) {
-      std::cerr << "EL formato de la segunda linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> racional_primero)) {
-      std::cerr << "EL formato de la segunda linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }   
-    if (!(std::getline(flujo_fichero_entrada, linea))) {
-      std::cerr << "Faltan lineas en el fichero de entrada" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    flujo_linea.clear();
-    flujo_linea.str(linea);
-    if (!(flujo_linea >> nombre_segundo_racional)) {
-      std::cerr << "EL formato de la tercera linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> cadena_temporal) || !(cadena_temporal == "=")) {
-      std::cerr << "EL formato de la tercera linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> racional_segundo)) {
-      std::cerr << "EL formato de la tercera linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    flujo_fichero_salida << "Base = " << base << std::endl
-                         << nombre_primer_racional << " = " << racional_primero << std::endl
-                         << nombre_segundo_racional << " = " << racional_segundo << std::endl
-                         << nombre_primer_racional << " == " << nombre_segundo_racional 
-                         << ((racional_primero == racional_segundo) ? ": true" : ": false") << std::endl
-                         << nombre_primer_racional << " < " << nombre_segundo_racional 
-                         << ((racional_primero < racional_segundo) ? ": true" : ": false") << std::endl
-                         << nombre_primer_racional << " + " << nombre_segundo_racional << ": " 
-                         << racional_primero + racional_segundo << std::endl
-                         << nombre_primer_racional << " * " << nombre_segundo_racional << ": " 
-                         << racional_primero * racional_segundo << std::endl
-                         << nombre_primer_racional << " / " << nombre_segundo_racional << ": " 
-                         << racional_primero / racional_segundo << std::endl;
+    flujo_fichero_salida << "Base = " << base << std::endl;
+    MostrarResultados(flujo_fichero_salida, board);
   } else if (base == 8) {  
-    BigRational<8> racional_primero;
-    BigRational<8> racional_segundo;
-    std::getline(flujo_fichero_entrada, linea);
-    flujo_linea.clear();
-    flujo_linea.str(linea);
-    std::string nombre_primer_racional, nombre_segundo_racional;
-    if (!(flujo_linea >> nombre_primer_racional)) {
-      std::cerr << "EL formato de la segunda linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> cadena_temporal) || !(cadena_temporal == "=")) {
-      std::cerr << "EL formato de la segunda linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> racional_primero)) {
-      std::cerr << "EL formato de la segunda linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }   
-    if (!(std::getline(flujo_fichero_entrada, linea))) {
-      std::cerr << "Faltan lineas en el fichero de entrada" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    flujo_linea.clear();
-    flujo_linea.str(linea);
-    if (!(flujo_linea >> nombre_segundo_racional)) {
-      std::cerr << "EL formato de la tercera linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> cadena_temporal) || !(cadena_temporal == "=")) {
-      std::cerr << "EL formato de la tercera linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> racional_segundo)) {
-      std::cerr << "EL formato de la tercera linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
+    std::unordered_map<std::string, BigNumber<8>*> board;
+    int contador_linea{1};
+    while (std::getline(flujo_fichero_entrada, linea)) {
+      ++contador_linea;
+      flujo_linea.clear();
+      flujo_linea.str(linea);
+      std::string nombre_numero_grande;
+      if ((!(flujo_linea >> nombre_numero_grande)) || !(flujo_linea >> cadena_temporal)) {
+        std::cerr << "EL formato de una de las lineas no es correcto (Nombre = X / Y o NOmbre ? X x Y)" << std::endl;
+        flujo_fichero_entrada.close();
+        flujo_fichero_salida.close();
+        return 1;
+      }
 
-    flujo_fichero_salida << "Base = " << base << std::endl
-                         << nombre_primer_racional << " = " << racional_primero << std::endl
-                         << nombre_segundo_racional << " = " << racional_segundo << std::endl
-                         << nombre_primer_racional << " == " << nombre_segundo_racional 
-                         << ((racional_primero == racional_segundo) ? ": true" : ": false") << std::endl
-                         << nombre_primer_racional << " < " << nombre_segundo_racional 
-                         << ((racional_primero < racional_segundo) ? ": true" : ": false") << std::endl
-                         << nombre_primer_racional << " + " << nombre_segundo_racional << ": " 
-                         << racional_primero + racional_segundo << std::endl
-                         << nombre_primer_racional << " * " << nombre_segundo_racional << ": " 
-                         << racional_primero * racional_segundo << std::endl
-                         << nombre_primer_racional << " / " << nombre_segundo_racional << ": " 
-                         << racional_primero / racional_segundo << std::endl;
+      if (cadena_temporal == "=") {
+        BigNumber<8>* numero_grande;
+        try {
+          flujo_linea >> *numero_grande;
+          board[nombre_numero_grande] = numero_grande;
+        } catch (BigNumberBadDigit& error_entrada) {
+          BigNumber<8>* cero = new BigInteger<8>{0};
+          board[nombre_numero_grande] = cero;
+          std::cerr << error_entrada.what() << std::endl;
+          continue;
+        } catch (BigNumberDivisionByZero& error_division) {
+          std::cerr << error_division.what() << std::endl;
+          BigNumber<8>* cero = new BigInteger<8>{0};
+          board[nombre_numero_grande] = cero;
+          continue;
+        } catch (...) {
+          std::cerr << "Ha sucedido un error al ejecutar el programa, se abortara la ejecucion. \n";
+          return 1;
+        }
+      } else if (cadena_temporal == "?") {
+        std::string nombre_primer_operando, nombre_segundo_operando;
+        unsigned char operador;
+        //BigNumber<8>* numero_grande;
+        try {
+          flujo_linea >> nombre_primer_operando >> nombre_segundo_operando >> operador;
+          BigNumber<8>* primer_operando = board.at(nombre_primer_operando);
+          BigNumber<8>* segundo_operando = board.at(nombre_segundo_operando);
+          board[nombre_numero_grande] = Calculadora(*primer_operando, *segundo_operando, operador);
+        } catch (BigNumberBadDigit& error_entrada) {
+          BigNumber<8>* cero = new BigInteger<8>{0};
+          board[nombre_numero_grande] = cero;
+          std::cerr << error_entrada.what() << std::endl;
+          continue;
+        } catch (BigNumberDivisionByZero& error_division) {
+          std::cerr << error_division.what() << std::endl;
+          BigNumber<8>* cero = new BigInteger<8>{0};
+          board[nombre_numero_grande] = cero;
+          continue;
+        } catch (...) {
+          std::cerr << "Ha sucedido un error al ejecutar el programa, se abortara la ejecucion. \n";
+          return 1;
+        }
+      } else {
+        std::cerr << "Se ha introducido un operador no valido en la linea " << contador_linea << ", sera omitida. \n";
+        continue;
+      }
+    }
+    flujo_fichero_salida << "Base = " << base << std::endl;
+    MostrarResultados(flujo_fichero_salida, board);
   } else if (base == 10) {
-    BigRational<10> racional_primero;
-    BigRational<10> racional_segundo;
-    std::getline(flujo_fichero_entrada, linea);
-    flujo_linea.clear();
-    flujo_linea.str(linea);
-    std::string nombre_primer_racional, nombre_segundo_racional;
-    if (!(flujo_linea >> nombre_primer_racional)) {
-      std::cerr << "EL formato de la segunda linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> cadena_temporal) || !(cadena_temporal == "=")) {
-      std::cerr << "EL formato de la segunda linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> racional_primero)) {
-      std::cerr << "EL formato de la segunda linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }   
-    if (!(std::getline(flujo_fichero_entrada, linea))) {
-      std::cerr << "Faltan lineas en el fichero de entrada" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    flujo_linea.clear();
-    flujo_linea.str(linea);
-    if (!(flujo_linea >> nombre_segundo_racional)) {
-      std::cerr << "EL formato de la tercera linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> cadena_temporal) || !(cadena_temporal == "=")) {
-      std::cerr << "EL formato de la tercera linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> racional_segundo)) {
-      std::cerr << "EL formato de la tercera linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    flujo_fichero_salida << "Base = " << base << std::endl
-                         << nombre_primer_racional << " = " << racional_primero << std::endl
-                         << nombre_segundo_racional << " = " << racional_segundo << std::endl
-                         << nombre_primer_racional << " == " << nombre_segundo_racional 
-                         << ((racional_primero == racional_segundo) ? ": true" : ": false") << std::endl
-                         << nombre_primer_racional << " < " << nombre_segundo_racional 
-                         << ((racional_primero < racional_segundo) ? ": true" : ": false") << std::endl
-                         << nombre_primer_racional << " + " << nombre_segundo_racional << ": " 
-                         << racional_primero + racional_segundo << std::endl
-                         << nombre_primer_racional << " * " << nombre_segundo_racional << ": " 
-                         << racional_primero * racional_segundo << std::endl
-                         << nombre_primer_racional << " / " << nombre_segundo_racional << ": " 
-                         << racional_primero / racional_segundo << std::endl;
-  } else if (base == 16) {
-    BigRational<16> racional_primero;
-    BigRational<16> racional_segundo;
-    std::getline(flujo_fichero_entrada, linea);
-    flujo_linea.clear();
-    flujo_linea.str(linea);
-    std::string nombre_primer_racional, nombre_segundo_racional;
-    if (!(flujo_linea >> nombre_primer_racional)) {
-      std::cerr << "EL formato de la segunda linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> cadena_temporal) || !(cadena_temporal == "=")) {
-      std::cerr << "EL formato de la segunda linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> racional_primero)) {
-      std::cerr << "EL formato de la segunda linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }   
-    if (!(std::getline(flujo_fichero_entrada, linea))) {
-      std::cerr << "Faltan lineas en el fichero de entrada" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    flujo_linea.clear();
-    flujo_linea.str(linea);
-    if (!(flujo_linea >> nombre_segundo_racional)) {
-      std::cerr << "EL formato de la tercera linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> cadena_temporal) || !(cadena_temporal == "=")) {
-      std::cerr << "EL formato de la tercera linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
-    if (!(flujo_linea >> racional_segundo)) {
-      std::cerr << "EL formato de la tercera linea linea no es correcto (Nombre = X / Y)" << std::endl;
-      flujo_fichero_entrada.close();
-      flujo_fichero_salida.close();
-      return 1;
-    }
+    std::unordered_map<std::string, BigNumber<10>*> board;
+    int contador_linea{1};
+    while (std::getline(flujo_fichero_entrada, linea)) {
+      ++contador_linea;
+      flujo_linea.clear();
+      flujo_linea.str(linea);
+      std::string nombre_numero_grande;
+      if ((!(flujo_linea >> nombre_numero_grande)) || !(flujo_linea >> cadena_temporal)) {
+        std::cerr << "EL formato de una de las lineas no es correcto (Nombre = X / Y o NOmbre ? X x Y)" << std::endl;
+        flujo_fichero_entrada.close();
+        flujo_fichero_salida.close();
+        return 1;
+      }
 
-    flujo_fichero_salida << "Base = " << base << std::endl
-                         << nombre_primer_racional << " = " << racional_primero << std::endl
-                         << nombre_segundo_racional << " = " << racional_segundo << std::endl
-                         << nombre_primer_racional << " == " << nombre_segundo_racional 
-                         << ((racional_primero == racional_segundo) ? ": true" : ": false") << std::endl
-                         << nombre_primer_racional << " < " << nombre_segundo_racional 
-                         << ((racional_primero < racional_segundo) ? ": true" : ": false") << std::endl
-                         << nombre_primer_racional << " + " << nombre_segundo_racional << ": " 
-                         << racional_primero + racional_segundo << std::endl
-                         << nombre_primer_racional << " * " << nombre_segundo_racional << ": " 
-                         << racional_primero * racional_segundo << std::endl
-                         << nombre_primer_racional << " / " << nombre_segundo_racional << ": " 
-                         << racional_primero / racional_segundo << std::endl;
+      if (cadena_temporal == "=") {
+        BigNumber<10>* numero_grande;
+        try {
+          flujo_linea >> *numero_grande;
+          board[nombre_numero_grande] = numero_grande;
+        } catch (BigNumberBadDigit& error_entrada) {
+          BigNumber<10>* cero = new BigInteger<10>{0};
+          board[nombre_numero_grande] = cero;
+          std::cerr << error_entrada.what() << std::endl;
+          continue;
+        } catch (BigNumberDivisionByZero& error_division) {
+          std::cerr << error_division.what() << std::endl;
+          BigNumber<10>* cero = new BigInteger<10>{0};
+          board[nombre_numero_grande] = cero;
+          continue;
+        } catch (...) {
+          std::cerr << "Ha sucedido un error al ejecutar el programa, se abortara la ejecucion. \n";
+          return 1;
+        }
+      } else if (cadena_temporal == "?") {
+        std::string nombre_primer_operando, nombre_segundo_operando;
+        unsigned char operador;
+        //BigNumber<10>* numero_grande;
+        try {
+          flujo_linea >> nombre_primer_operando >> nombre_segundo_operando >> operador;
+          BigNumber<10>* primer_operando = board.at(nombre_primer_operando);
+          BigNumber<10>* segundo_operando = board.at(nombre_segundo_operando);
+          board[nombre_numero_grande] = Calculadora(*primer_operando, *segundo_operando, operador);
+        } catch (BigNumberBadDigit& error_entrada) {
+          BigNumber<10>* cero = new BigInteger<10>{0};
+          board[nombre_numero_grande] = cero;
+          std::cerr << error_entrada.what() << std::endl;
+          continue;
+        } catch (BigNumberDivisionByZero& error_division) {
+          std::cerr << error_division.what() << std::endl;
+          BigNumber<10>* cero = new BigInteger<10>{0};
+          board[nombre_numero_grande] = cero;
+          continue;
+        } catch (...) {
+          std::cerr << "Ha sucedido un error al ejecutar el programa, se abortara la ejecucion. \n";
+          return 1;
+        }
+      } else {
+        std::cerr << "Se ha introducido un operador no valido en la linea " << contador_linea << ", sera omitida. \n";
+        continue;
+      }
+    }
+    flujo_fichero_salida << "Base = " << base << std::endl;
+    MostrarResultados(flujo_fichero_salida, board);
+  } else if (base == 16) {
+    std::cout << "111111111111 \n";
+    std::unordered_map<std::string, BigNumber<16>*> board;
+    int contador_linea{1};
+    while (std::getline(flujo_fichero_entrada, linea)) {
+      ++contador_linea;
+      flujo_linea.clear();
+      flujo_linea.str(linea);
+      std::string nombre_numero_grande;
+      if ((!(flujo_linea >> nombre_numero_grande)) || !(flujo_linea >> cadena_temporal)) {
+        std::cerr << "EL formato de una de las lineas no es correcto (Nombre = X / Y o NOmbre ? X x Y)" << std::endl;
+        flujo_fichero_entrada.close();
+        flujo_fichero_salida.close();
+        return 1;
+      }
+
+      if (cadena_temporal == "=") {
+        BigNumber<16>* numero_grande;
+        std::cout << "1111111111112 \n";
+        try {
+          flujo_linea >> *numero_grande;
+          board[nombre_numero_grande] = numero_grande;
+        } catch (BigNumberBadDigit& error_entrada) {
+          BigNumber<16>* cero = new BigInteger<16>{0};
+          board[nombre_numero_grande] = cero;
+          std::cerr << error_entrada.what() << std::endl;
+          continue;
+        } catch (BigNumberDivisionByZero& error_division) {
+          std::cerr << error_division.what() << std::endl;
+          BigNumber<16>* cero = new BigInteger<16>{0};
+          board[nombre_numero_grande] = cero;
+          continue;
+        } catch (...) {
+          std::cerr << "Ha sucedido un error al ejecutar el programa, se abortara la ejecucion. \n";
+          return 1;
+        }
+      } else if (cadena_temporal == "?") {
+        std::cout << "1111111111113 \n";
+        std::string nombre_primer_operando, nombre_segundo_operando;
+        unsigned char operador;
+        //BigNumber<16>* numero_grande;
+        try {
+          std::cout << "111111111111a \n";
+          flujo_linea >> nombre_primer_operando >> nombre_segundo_operando >> operador;
+          BigNumber<16>* primer_operando = board.at(nombre_primer_operando);
+          BigNumber<16>* segundo_operando = board.at(nombre_segundo_operando);
+          board[nombre_numero_grande] = Calculadora(*primer_operando, *segundo_operando, operador);
+        } catch (BigNumberBadDigit& error_entrada) {
+          BigNumber<16>* cero = new BigInteger<16>{0};
+          board[nombre_numero_grande] = cero;
+          std::cerr << error_entrada.what() << std::endl;
+          continue;
+        } catch (BigNumberDivisionByZero& error_division) {
+          std::cerr << error_division.what() << std::endl;
+          BigNumber<16>* cero = new BigInteger<16>{0};
+          board[nombre_numero_grande] = cero;
+          continue;
+        } catch (...) {
+          std::cerr << "Ha sucedido un error al ejecutar el programa, se abortara la ejecucion. \n";
+          return 1;
+        }
+      } else {
+        std::cerr << "Se ha introducido un operador no valido en la linea " << contador_linea << ", sera omitida. \n";
+        continue;
+      }
+    }
+    flujo_fichero_salida << "Base = " << base << std::endl;
+    MostrarResultados(flujo_fichero_salida, board);
   } else {
     std::cerr << "Se ha introducido una base no valida." << std::endl;
     flujo_fichero_entrada.close();
@@ -331,5 +346,6 @@ int main() {
   }
   flujo_fichero_entrada.close();
   flujo_fichero_salida.close();
+  */
   return 0;
 }

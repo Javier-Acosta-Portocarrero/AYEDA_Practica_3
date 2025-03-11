@@ -1,3 +1,4 @@
 Base = 16
-N1 = 13A10 / AFACB
-N2 = A7B42 / FFFF1
+N1 = 236i
+N2 = AB64u
+E1 ? N2 N1 +

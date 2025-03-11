@@ -12,8 +12,7 @@
 // para realizar operaciones con números enteros sin signo de gran tamaño.
 
 #include "big_unsigned.h"
-#include "big_rational.h"
-#include "big_integer.h"
+#include "excepcion.h"
 
 
 /**
@@ -42,6 +41,7 @@ BigUnsigned<Base>::BigUnsigned(unsigned n) {
 
 template <unsigned char Base>
 BigUnsigned<Base>::BigUnsigned(const unsigned char* entrada) {
+  //std::cout << "adios " << entrada << std::endl;
   if (entrada) {
     size_t len = std::strlen(reinterpret_cast<const char*>(entrada));  // Calcula el tamano de la cadena
     for (int i{static_cast<int>(len) - 1}; i >= 0; --i) {
@@ -51,14 +51,11 @@ BigUnsigned<Base>::BigUnsigned(const unsigned char* entrada) {
       } else if (entrada[i] >= 'A' && entrada[i] <= 'Z') {
         valor_real = entrada[i] - 'A' + 10;
       } else {
-        std::cerr << "Se han encontarado simbolos fuera de rango en la entrada, seran ignorados."
-                  << std::endl;
-        continue;
+        throw BigNumberBadDigit("Se han encontarado simbolos no validos en la entrada.");
+        //continue;
       } 
       if (valor_real >= Base) {
-        std::cerr << "Se ha introducido un valor que se sale de rango de la base indicada, se ignorara"
-                  <<  " este digito" << std::endl;
-        continue;
+        throw BigNumberBadDigit("Se ha introducido un valor que se sale de rango de la base indicada.");
       }
       numero_unsigned_.emplace_back(valor_real);
     } 
@@ -69,6 +66,7 @@ BigUnsigned<Base>::BigUnsigned(const unsigned char* entrada) {
   } else {
     numero_unsigned_.emplace_back(0);
   }
+  //std::cout << "compo " << *this << std::endl;
 }  
 
 /**
@@ -149,15 +147,11 @@ std::istream& operator>>(std::istream& in, BigUnsigned<Base>& big_unsigned) {
     } else if (numero_crudo[i] >= 'A' && numero_crudo[i] <= 'Z') {
       valor_real = numero_crudo[i] - 'A' + 10;
     } else {
-      std::cerr << "Se han encontarado simbolos fuera de rango en la entrada, seran ignorados."
-                << std::endl;
-      continue;
+      throw BigNumberBadDigit("Se han encontarado simbolos no validos en la entrada.");
     }
     
     if (static_cast<int>(valor_real) >= Base) {
-      std::cerr << "Se ha introducido un valor que se sale de rango de la base indicada, se ignorara"
-                <<  " este digito" << std::endl;
-      continue;
+      throw BigNumberBadDigit("Se ha introducido un valor que se sale de rango de la base indicada.");
     }
     big_unsigned.numero_unsigned_.emplace_back(valor_real);
   } 
@@ -453,8 +447,9 @@ BigUnsigned<Base> BigUnsigned<Base>::operator*(const BigUnsigned<Base>& multipli
 template <unsigned char Base>
 BigUnsigned<Base> operator/(const BigUnsigned<Base>& dividendo, const BigUnsigned<Base>& divisor) {
   if (divisor == BigUnsigned<Base>{unsigned(0)}) {
-    std::cerr << "No se puede dividir entre 0" << std::endl;
-    return BigUnsigned<Base>{unsigned(0)};
+    //std::cerr << "No se puede dividir entre 0" << std::endl;
+    throw BigNumberDivisionByZero();
+    //return BigUnsigned<Base>{unsigned(0)};
   } else if (divisor == BigUnsigned<Base>{unsigned(1)}) {
     return dividendo;
   } else if (divisor == dividendo) {
@@ -480,8 +475,9 @@ BigUnsigned<Base> operator/(const BigUnsigned<Base>& dividendo, const BigUnsigne
 template<unsigned char Base>
 BigUnsigned<Base> BigUnsigned<Base>::operator%(const BigUnsigned<Base>& divisor) const {
   if (divisor == BigUnsigned<Base>{unsigned(0)}) {
-    std::cerr << "No se puede dividir entre 0" << std::endl;
-    return BigUnsigned<Base>{unsigned(0)};
+    //std::cerr << "No se puede dividir entre 0" << std::endl;
+    throw BigNumberDivisionByZero();
+    //return BigUnsigned<Base>{unsigned(0)};
   } else if (divisor == BigUnsigned<Base>{unsigned(1)}) {
     return BigUnsigned<Base>{unsigned(0)};
   }
@@ -511,29 +507,30 @@ void BigUnsigned<Base>::FormatearNumero() {
 
 template <unsigned char Base>
 BigNumber<Base>& BigUnsigned<Base>::add(const BigNumber<Base>& sumador) const {
+  std::cout << "1111111111118 \n";
   BigUnsigned<Base> resultado_suma =  *this + BigUnsigned<Base>(sumador);
-  BigNumber<Base>& resultado = resultado_suma;
+  static BigNumber<Base>& resultado = resultado_suma;
   return resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigUnsigned<Base>::subtract(const BigNumber<Base>& sustraendo) const {
   BigUnsigned<Base> resultado_resta =  *this - BigUnsigned<Base>(sustraendo);
-  BigNumber<Base>& resultado = resultado_resta;
+  static BigNumber<Base>& resultado = resultado_resta;
   return resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigUnsigned<Base>::multiply(const BigNumber<Base>& multiplicador) const {
   BigUnsigned<Base> resultado_mult =  *this * BigUnsigned<Base>(multiplicador);
-  BigNumber<Base>& resultado = resultado_mult;
+  static BigNumber<Base>& resultado = resultado_mult;
   return resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigUnsigned<Base>::divide(const BigNumber<Base>& divisor) const {
   BigUnsigned<Base> resultado_div =  *this / BigUnsigned<Base>(divisor);
-  BigNumber<Base>& resultado = resultado_div;
+  static BigNumber<Base>& resultado = resultado_div;
   return resultado;
 }
 
@@ -549,12 +546,13 @@ BigUnsigned<Base>::operator BigInteger<Base>() const {
 
 template <unsigned char Base>
 BigUnsigned<Base>::operator BigRational<Base>() const {
-  return BigRational<Base>{BigInteger<Base>{*this}, 1};
+  return BigRational<Base>{BigInteger<Base>{*this}, BigUnsigned<Base>{unsigned(1)}};
 }
 
 template <unsigned char Base>
 std::ostream& BigUnsigned<Base>::write(std::ostream& out) const {
-  out << *this;
+  std::cout << "2a \n";
+  out << *this << "u";
   return out;
 }
 

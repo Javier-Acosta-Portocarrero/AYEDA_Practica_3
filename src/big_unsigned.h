@@ -18,6 +18,8 @@
 #include <vector>
 #include <cstring>
 #include <algorithm>
+#include "big_integer.h"
+#include "big_rational.h"
 #include "big_number.h"
 
 template<unsigned char Base>
@@ -37,8 +39,8 @@ template <unsigned char Base> BigUnsigned<Base> operator/(const BigUnsigned<Base
 template <unsigned char Base>
 class BigUnsigned : public BigNumber<Base> {
  public:
-  BigUnsigned(unsigned n = 0);
-  BigUnsigned(const unsigned char* );
+  explicit BigUnsigned(unsigned n = 0);
+  explicit BigUnsigned(const unsigned char* );
   BigUnsigned(const BigUnsigned<Base>& copia); // Constructor de copia
 
   size_t Size() const { return numero_unsigned_.size();}

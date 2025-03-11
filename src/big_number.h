@@ -3,6 +3,7 @@
 #define BIG_NUMBER_H
 
 #include <iostream>
+#include "excepcion.h"
 
 template<unsigned char Base> class BigUnsigned;
 template<unsigned char Base> class BigInteger;
@@ -27,25 +28,10 @@ class BigNumber {
   friend std::ostream& operator<< <>(std::ostream&, const BigNumber<Base>&);
   friend std::istream& operator>> <>(std::istream&, BigNumber<Base>&);
 
-  static BigNumber<Base>* create(const char* cadena_cruda) {
-    std::string cadena{cadena_cruda};
-    if (cadena[cadena.size() - 1] == 'i') {
-      BigNumber<Base>* resultado = new BigInteger<Base>{cadena.substr(0, cadena.size() - 1).c_str()};
-      return resultado;
-    } else if (cadena[cadena.size() - 1] == 'u') {
-      BigNumber<Base>* resultado = new BigInteger<Base>{cadena.substr(0, cadena.size() - 1).c_str()};
-      return resultado;
-    } else if (cadena[cadena.size() - 1] == 'r') {
-      BigNumber<Base>* resultado = new BigRational<Base>{cadena.substr(0, cadena.size() - 1).c_str()};
-      return resultado;
-    } else { 
-      std::cerr << "Foramto de big number no valido \n";
-    }
-  }
-
  protected:
   virtual std::ostream& write(std::ostream&) const = 0;
   virtual std::istream& read(std::istream&) = 0;
+  static BigNumber<Base>* create(const char* cadena_cruda);
 };
 
 /*
