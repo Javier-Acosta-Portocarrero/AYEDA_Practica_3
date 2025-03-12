@@ -1,7 +1,25 @@
+// Universidad de La Laguna
+// Escuela Superior de Ingeniería y Tecnología
+// Grado en Ingeniería Informática
+// Asignatura: AYEDA
+// Curso: 2º
+// Práctica 3: Calculadora polaca
+// Autor: Javier Acosta Portocarrero
+// Correo: alu0101660769@ull.edu.es
+// Fecha: 12/03/2025
+// Archivo big_number.cc: fichero de definicion de la clase abstracta BigNumber.
+
 #include "big_number.h"
 #include "big_unsigned.h"
 #include "big_integer.h"
 #include "big_rational.h"
+
+/**
+  * @brief Metodo estatico encargado de crear un BigNumber a partir de una cadena.
+  *
+  * @param cadena_cruda (cadena que contiene el numero).
+  * @return Puntero al BigNUmber creado.
+  */
 
 template <unsigned char Base>
 BigNumber<Base>* BigNumber<Base>::create(const char* cadena_cruda) {
@@ -23,12 +41,28 @@ BigNumber<Base>* BigNumber<Base>::create(const char* cadena_cruda) {
     }
   }
 
+/**
+  * @brief Sobrecarga del operador de salida '<<' para insertar un número BigNumber en un flujo de salida.
+  *
+  * @param out (flujo de salida en el que se escribira el número).
+  * @param numero_a_escribir (referencia al objeto BigNumber que se mostrara).
+  * @return out (flujo de salida modificado).
+  */
+
 template <unsigned char Base>
 std::ostream& operator<<(std::ostream& out, const BigNumber<Base>& numero_a_escribir) {
   //std::cout << "1a \n";
   numero_a_escribir.write(out);
   return out;
 }
+
+/**
+  * @brief Sobrecarga del operador de entrada '>>' para leer un número BigNumber desde un flujo de entrada.
+  *
+  * @param in (flujo de entrada desde el que se leerá el número).
+  * @param numero_a_leer (referencia al objeto BigNumber donde se almacenará el número leído).
+  * @return in (flujo de entrada modificado).
+  */
 
 template <unsigned char Base>
 std::istream& operator>>(std::istream& in, BigNumber<Base>& numero_a_leer) {

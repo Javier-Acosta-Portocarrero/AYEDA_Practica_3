@@ -3,10 +3,10 @@
 // Grado en Ingeniería Informática
 // Asignatura: AYEDA
 // Curso: 2º
-// Práctica 2: Notación posicional para numeros grandes
+// Práctica 3: Calculadora polaca
 // Autor: Javier Acosta Portocarrero
 // Correo: alu0101660769@ull.edu.es
-// Fecha: 26/02/2025
+// Fecha: 12/03/2025
 // Archivo big_integer.h: fichero de declaración de la clase BigInteger.
 // Contiene la declaración de los métodos y operadores sobrecargados
 // para realizar operaciones con números enteros con signo de gran tamaño.

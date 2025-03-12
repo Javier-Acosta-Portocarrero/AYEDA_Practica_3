@@ -53,6 +53,14 @@ BigInteger<2> MCD(const BigInteger<2>& primer_entero, const BigInteger<2>& segun
   }
 }
 
+/**
+  * @brief Función que calculoa distintas operaciones entre dos BigNumber.
+  *
+  * @param primer_operando (referencia al primer operando.
+  * @param segundo_operando (referencia al segundo operando).
+  * @return BigNumber que contiene el resultado.
+  */
+
 template <unsigned char Base>
 BigNumber<Base>& Calculadora(BigNumber<Base>& primer_operando, BigNumber<Base>& segundo_operando, unsigned char signo) {
   if (signo == '+') {
@@ -74,6 +82,13 @@ BigNumber<Base>& Calculadora(BigNumber<Base>& primer_operando, BigNumber<Base>& 
   }
   //std::cout << "1111111111115 \n";
 }
+
+/**
+  * @brief Función que vuelca en un flujo de salida la tabla con los resultados de las operaciones.
+  *
+  * @param out (flujo de salida en el que se volcaran los resultados).
+  * @param resultados (mapa que contiene los resultados).
+  */
 
 template <unsigned char Base>
 void MostrarResultados(std::ostream& out, const std::unordered_map<std::string, BigNumber<Base>*>& resultados) {

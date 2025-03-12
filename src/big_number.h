@@ -1,3 +1,13 @@
+// Universidad de La Laguna
+// Escuela Superior de Ingeniería y Tecnología
+// Grado en Ingeniería Informática
+// Asignatura: AYEDA
+// Curso: 2º
+// Práctica 3: Calculadora polaca
+// Autor: Javier Acosta Portocarrero
+// Correo: alu0101660769@ull.edu.es
+// Fecha: 12/03/2025
+// Archivo big_number.h: fichero de declaración de la clase abstracta BigNumber.
 
 #ifndef BIG_NUMBER_H
 #define BIG_NUMBER_H
