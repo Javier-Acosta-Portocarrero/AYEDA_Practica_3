@@ -18,18 +18,6 @@
 #include "funciones.h"
 
 int main() {
-  BigInteger<16> prueba1{int(37)};
-  BigNumber<16>& pruebaa = prueba1;
-  std::cin >> pruebaa;
-  std::cout << "IIII " << pruebaa << std::endl;
-
-  BigInteger<16> prueba2{unsigned(37)};
-  BigNumber<16>& pruebaa2 = prueba2;
-  std::cout << pruebaa2 << std::endl;
-
-  std::cout << BigInteger<16>(pruebaa2) << std::endl;
-  //std::cout << pruebaa.add(pruebaa2) << std::endl;
-  /* 
   std::string fichero_entrada, fichero_salida;
   std::cout << "Escribe el nombre del fichero de entrada: ";
   std::cin >> fichero_entrada;
@@ -77,7 +65,7 @@ int main() {
     flujo_fichero_salida.close();
     return 1;
   }
-
+  
   if (base == 2) {
     std::unordered_map<std::string, BigNumber<2>*> board;
     int contador_linea{1};
@@ -94,10 +82,12 @@ int main() {
       }
 
       if (cadena_temporal == "=") {
-        BigNumber<2>* numero_grande;
+        //std::cout << "1111111111112 \n";
         try {
-          flujo_linea >> *numero_grande;
-          board[nombre_numero_grande] = numero_grande;
+          std::string cadena_entrada;
+          flujo_linea >> cadena_entrada;
+          //std::cout << "33\n";
+          board[nombre_numero_grande] = BigNumber<2>::create(cadena_entrada.c_str());
         } catch (BigNumberBadDigit& error_entrada) {
           BigNumber<2>* cero = new BigInteger<2>{0};
           board[nombre_numero_grande] = cero;
@@ -120,7 +110,7 @@ int main() {
           flujo_linea >> nombre_primer_operando >> nombre_segundo_operando >> operador;
           BigNumber<2>* primer_operando = board.at(nombre_primer_operando);
           BigNumber<2>* segundo_operando = board.at(nombre_segundo_operando);
-          board[nombre_numero_grande] = Calculadora(*primer_operando, *segundo_operando, operador);
+          board[nombre_numero_grande] = &Calculadora(*primer_operando, *segundo_operando, operador);
         } catch (BigNumberBadDigit& error_entrada) {
           BigNumber<2>* cero = new BigInteger<2>{0};
           board[nombre_numero_grande] = cero;
@@ -142,7 +132,7 @@ int main() {
     }
     flujo_fichero_salida << "Base = " << base << std::endl;
     MostrarResultados(flujo_fichero_salida, board);
-  } else if (base == 8) {  
+  } else if (base == 8) {
     std::unordered_map<std::string, BigNumber<8>*> board;
     int contador_linea{1};
     while (std::getline(flujo_fichero_entrada, linea)) {
@@ -158,10 +148,12 @@ int main() {
       }
 
       if (cadena_temporal == "=") {
-        BigNumber<8>* numero_grande;
+        //std::cout << "1111111111112 \n";
         try {
-          flujo_linea >> *numero_grande;
-          board[nombre_numero_grande] = numero_grande;
+          std::string cadena_entrada;
+          flujo_linea >> cadena_entrada;
+          //std::cout << "33\n";
+          board[nombre_numero_grande] = BigNumber<8>::create(cadena_entrada.c_str());
         } catch (BigNumberBadDigit& error_entrada) {
           BigNumber<8>* cero = new BigInteger<8>{0};
           board[nombre_numero_grande] = cero;
@@ -184,7 +176,7 @@ int main() {
           flujo_linea >> nombre_primer_operando >> nombre_segundo_operando >> operador;
           BigNumber<8>* primer_operando = board.at(nombre_primer_operando);
           BigNumber<8>* segundo_operando = board.at(nombre_segundo_operando);
-          board[nombre_numero_grande] = Calculadora(*primer_operando, *segundo_operando, operador);
+          board[nombre_numero_grande] = &Calculadora(*primer_operando, *segundo_operando, operador);
         } catch (BigNumberBadDigit& error_entrada) {
           BigNumber<8>* cero = new BigInteger<8>{0};
           board[nombre_numero_grande] = cero;
@@ -222,10 +214,12 @@ int main() {
       }
 
       if (cadena_temporal == "=") {
-        BigNumber<10>* numero_grande;
+        //std::cout << "1111111111112 \n";
         try {
-          flujo_linea >> *numero_grande;
-          board[nombre_numero_grande] = numero_grande;
+          std::string cadena_entrada;
+          flujo_linea >> cadena_entrada;
+          //std::cout << "33\n";
+          board[nombre_numero_grande] = BigNumber<10>::create(cadena_entrada.c_str());
         } catch (BigNumberBadDigit& error_entrada) {
           BigNumber<10>* cero = new BigInteger<10>{0};
           board[nombre_numero_grande] = cero;
@@ -248,7 +242,7 @@ int main() {
           flujo_linea >> nombre_primer_operando >> nombre_segundo_operando >> operador;
           BigNumber<10>* primer_operando = board.at(nombre_primer_operando);
           BigNumber<10>* segundo_operando = board.at(nombre_segundo_operando);
-          board[nombre_numero_grande] = Calculadora(*primer_operando, *segundo_operando, operador);
+          board[nombre_numero_grande] = &Calculadora(*primer_operando, *segundo_operando, operador);
         } catch (BigNumberBadDigit& error_entrada) {
           BigNumber<10>* cero = new BigInteger<10>{0};
           board[nombre_numero_grande] = cero;
@@ -271,7 +265,6 @@ int main() {
     flujo_fichero_salida << "Base = " << base << std::endl;
     MostrarResultados(flujo_fichero_salida, board);
   } else if (base == 16) {
-    std::cout << "111111111111 \n";
     std::unordered_map<std::string, BigNumber<16>*> board;
     int contador_linea{1};
     while (std::getline(flujo_fichero_entrada, linea)) {
@@ -287,11 +280,12 @@ int main() {
       }
 
       if (cadena_temporal == "=") {
-        BigNumber<16>* numero_grande;
-        std::cout << "1111111111112 \n";
+        //std::cout << "1111111111112 \n";
         try {
-          flujo_linea >> *numero_grande;
-          board[nombre_numero_grande] = numero_grande;
+          std::string cadena_entrada;
+          flujo_linea >> cadena_entrada;
+          //std::cout << "33\n";
+          board[nombre_numero_grande] = BigNumber<16>::create(cadena_entrada.c_str());
         } catch (BigNumberBadDigit& error_entrada) {
           BigNumber<16>* cero = new BigInteger<16>{0};
           board[nombre_numero_grande] = cero;
@@ -307,16 +301,14 @@ int main() {
           return 1;
         }
       } else if (cadena_temporal == "?") {
-        std::cout << "1111111111113 \n";
         std::string nombre_primer_operando, nombre_segundo_operando;
         unsigned char operador;
         //BigNumber<16>* numero_grande;
         try {
-          std::cout << "111111111111a \n";
           flujo_linea >> nombre_primer_operando >> nombre_segundo_operando >> operador;
           BigNumber<16>* primer_operando = board.at(nombre_primer_operando);
           BigNumber<16>* segundo_operando = board.at(nombre_segundo_operando);
-          board[nombre_numero_grande] = Calculadora(*primer_operando, *segundo_operando, operador);
+          board[nombre_numero_grande] = &Calculadora(*primer_operando, *segundo_operando, operador);
         } catch (BigNumberBadDigit& error_entrada) {
           BigNumber<16>* cero = new BigInteger<16>{0};
           board[nombre_numero_grande] = cero;
@@ -346,6 +338,5 @@ int main() {
   }
   flujo_fichero_entrada.close();
   flujo_fichero_salida.close();
-  */
   return 0;
 }

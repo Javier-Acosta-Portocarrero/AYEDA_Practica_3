@@ -233,30 +233,26 @@ bool operator<(const BigRational<Base>& primer_racional, const BigRational<Base>
 
 template <unsigned char Base>
 BigNumber<Base>& BigRational<Base>::add(const BigNumber<Base>& sumador) const {
-  BigRational<Base> resultado_suma =  *this + BigRational<Base>(sumador);
-  static BigNumber<Base>& resultado = resultado_suma;
-  return resultado;
+  BigNumber<Base>* resultado = new BigRational<Base>{*this + BigRational<Base>(sumador)};
+  return *resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigRational<Base>::subtract(const BigNumber<Base>& sustraendo) const {
-  BigRational<Base> resultado_resta =  *this - BigRational<Base>(sustraendo);
-  static BigNumber<Base>& resultado = resultado_resta;
-  return resultado;
+  BigNumber<Base>* resultado = new BigRational<Base>{*this - BigRational<Base>(sustraendo)};
+  return *resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigRational<Base>::multiply(const BigNumber<Base>& multiplicador) const {
-  BigRational<Base> resultado_mult =  *this * BigRational<Base>(multiplicador);
-  static BigNumber<Base>& resultado = resultado_mult;
-  return resultado;
+  BigNumber<Base>* resultado = new BigRational<Base>{*this * BigRational<Base>(multiplicador)};
+  return *resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigRational<Base>::divide(const BigNumber<Base>& divisor) const {
-  BigRational<Base> resultado_div =  *this / BigRational<Base>(divisor);
-  static BigNumber<Base>& resultado = resultado_div;
-  return resultado;
+  BigNumber<Base>* resultado = new BigRational<Base>{*this / BigRational<Base>(divisor)};
+  return *resultado;
 }
 
 template <unsigned char Base>

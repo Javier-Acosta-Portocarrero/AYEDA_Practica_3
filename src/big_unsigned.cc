@@ -507,31 +507,26 @@ void BigUnsigned<Base>::FormatearNumero() {
 
 template <unsigned char Base>
 BigNumber<Base>& BigUnsigned<Base>::add(const BigNumber<Base>& sumador) const {
-  std::cout << "1111111111118 \n";
-  BigUnsigned<Base> resultado_suma =  *this + BigUnsigned<Base>(sumador);
-  static BigNumber<Base>& resultado = resultado_suma;
-  return resultado;
+  BigNumber<Base>* resultado =  new BigUnsigned<Base>{*this + BigUnsigned<Base>(sumador)};
+  return *resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigUnsigned<Base>::subtract(const BigNumber<Base>& sustraendo) const {
-  BigUnsigned<Base> resultado_resta =  *this - BigUnsigned<Base>(sustraendo);
-  static BigNumber<Base>& resultado = resultado_resta;
-  return resultado;
+  BigNumber<Base>* resultado =  new BigUnsigned<Base>{*this - BigUnsigned<Base>(sustraendo)};
+  return *resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigUnsigned<Base>::multiply(const BigNumber<Base>& multiplicador) const {
-  BigUnsigned<Base> resultado_mult =  *this * BigUnsigned<Base>(multiplicador);
-  static BigNumber<Base>& resultado = resultado_mult;
-  return resultado;
+  BigNumber<Base>* resultado =  new BigUnsigned<Base>{*this * BigUnsigned<Base>(multiplicador)};
+  return *resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigUnsigned<Base>::divide(const BigNumber<Base>& divisor) const {
-  BigUnsigned<Base> resultado_div =  *this / BigUnsigned<Base>(divisor);
-  static BigNumber<Base>& resultado = resultado_div;
-  return resultado;
+  BigNumber<Base>* resultado =  new BigUnsigned<Base>{*this / BigUnsigned<Base>(divisor)};
+  return *resultado;
 }
 
 template <unsigned char Base>
@@ -551,7 +546,7 @@ BigUnsigned<Base>::operator BigRational<Base>() const {
 
 template <unsigned char Base>
 std::ostream& BigUnsigned<Base>::write(std::ostream& out) const {
-  std::cout << "2a \n";
+  //std::cout << "2a \n";
   out << *this << "u";
   return out;
 }

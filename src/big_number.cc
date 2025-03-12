@@ -11,7 +11,9 @@ BigNumber<Base>* BigNumber<Base>::create(const char* cadena_cruda) {
       BigNumber<Base>* resultado = new BigInteger<Base>{reinterpret_cast<const unsigned char*>(cadena.substr(0, cadena.size() - 1).c_str())};
       return resultado;
     } else if (cadena[cadena.size() - 1] == 'u') {
+      //std::cout << "hola \n";
       BigNumber<Base>* resultado = new BigUnsigned<Base>{reinterpret_cast<const unsigned char*>(cadena.substr(0, cadena.size() - 1).c_str())};
+      //std::cout << BigUnsigned<Base>{reinterpret_cast<const unsigned char*>(cadena.substr(0, cadena.size() - 1).c_str())} << " adios \n";
       return resultado;
     } else if (cadena[cadena.size() - 1] == 'r') {
       BigNumber<Base>* resultado = new BigRational<Base>{reinterpret_cast<const unsigned char*>(cadena.substr(0, cadena.size() - 1).c_str())};
@@ -23,7 +25,7 @@ BigNumber<Base>* BigNumber<Base>::create(const char* cadena_cruda) {
 
 template <unsigned char Base>
 std::ostream& operator<<(std::ostream& out, const BigNumber<Base>& numero_a_escribir) {
-  std::cout << "1a \n";
+  //std::cout << "1a \n";
   numero_a_escribir.write(out);
   return out;
 }
@@ -36,18 +38,22 @@ std::istream& operator>>(std::istream& in, BigNumber<Base>& numero_a_leer) {
   return in;
 }
 
+template BigNumber<2>::~BigNumber();
 template BigNumber<2>* BigNumber<2>::create(const char* cadena_cruda);
 template std::ostream& operator<<(std::ostream& out, const BigNumber<2>& numero_a_escribir);
 template std::istream& operator>>(std::istream& in, BigNumber<2>& numero_a_leer);
 
+template BigNumber<8>::~BigNumber();
 template BigNumber<8>* BigNumber<8>::create(const char* cadena_cruda);
 template std::ostream& operator<<(std::ostream& out, const BigNumber<8>& numero_a_leer);
 template std::istream& operator>>(std::istream& in, BigNumber<8>& numero_a_leer);
 
+template BigNumber<10>::~BigNumber();
 template BigNumber<10>* BigNumber<10>::create(const char* cadena_cruda);
 template std::ostream& operator<<(std::ostream& out, const BigNumber<10>& numero_a_escribir);
 template std::istream& operator>>(std::istream& in, BigNumber<10>& numero_a_leer);
 
+template BigNumber<16>::~BigNumber();
 template BigNumber<16>* BigNumber<16>::create(const char* cadena_cruda);
 template std::ostream& operator<<(std::ostream& out, const BigNumber<16>& numero_a_escribir);
 template std::istream& operator>>(std::istream& in, BigNumber<16>& numero_a_leer);

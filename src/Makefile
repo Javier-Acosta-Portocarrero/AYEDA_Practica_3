@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS =  -std=c++23 -Wall 
+CXXFLAGS =  -std=c++23 
 TARGET = practica1_ayed
 
 SOURCES = funciones.cc main.cc big_unsigned.cc big_integer.cc big_rational.cc big_number.cc

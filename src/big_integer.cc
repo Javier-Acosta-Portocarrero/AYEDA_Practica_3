@@ -102,7 +102,7 @@ BigInteger<Base>& BigInteger<Base>::operator=(const BigInteger<Base>& copia) {
 
 template <unsigned char Base>
 std::ostream& operator<<(std::ostream& out, const BigInteger<Base>& entero_a_escribir) {
-  std::cout << "PROBLEMA << INTEGER \n";
+  //std::cout << "PROBLEMA << INTEGER \n";
   out << (entero_a_escribir.positivo_? '+' : '-') << entero_a_escribir.numero_sin_signo_;
   return out;
 }
@@ -335,31 +335,27 @@ BigInteger<Base> BigInteger<Base>::operator%(const BigInteger<Base>& divisor) co
 
 template <unsigned char Base>
 BigNumber<Base>& BigInteger<Base>::add(const BigNumber<Base>& sumador) const {
-  std::cout << "1111111111117 \n";
-  BigInteger<Base> resultado_suma =  *this + BigInteger<Base>(sumador);
-  static BigNumber<Base>& resultado = resultado_suma;
-  return resultado;
+  //std::cout << "1111111111117 \n";
+  BigNumber<Base>* resultado_suma = new BigInteger<Base>{*this + BigInteger<Base>(sumador)};
+  return *resultado_suma;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigInteger<Base>::subtract(const BigNumber<Base>& sustraendo) const {
-  BigInteger<Base> resultado_resta =  *this - BigInteger<Base>(sustraendo);
-  static BigNumber<Base>& resultado = resultado_resta;
-  return resultado;
+  BigNumber<Base>* resultado = new BigInteger<Base>{*this - BigInteger<Base>(sustraendo)};
+  return *resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigInteger<Base>::multiply(const BigNumber<Base>& multiplicador) const {
-  BigInteger<Base> resultado_mult =  *this * BigInteger<Base>(multiplicador);
-  static BigNumber<Base>& resultado = resultado_mult;
-  return resultado;
+  BigNumber<Base>* resultado = new BigInteger<Base>{*this * BigInteger<Base>(multiplicador)};
+  return *resultado;
 }
 
 template <unsigned char Base>
 BigNumber<Base>& BigInteger<Base>::divide(const BigNumber<Base>& divisor) const {
-  BigInteger<Base> resultado_div =  *this / BigInteger<Base>(divisor);
-  static BigNumber<Base>& resultado = resultado_div;
-  return resultado;
+  BigNumber<Base>* resultado = new BigInteger<Base>{*this / BigInteger<Base>(divisor)};
+  return *resultado;
 }
 
 template <unsigned char Base>
@@ -379,9 +375,9 @@ BigInteger<Base>::operator BigRational<Base>() const {
 
 template <unsigned char Base>
 std::ostream& BigInteger<Base>::write(std::ostream& out) const {
-  std::cout << "3a \n";
+  //std::cout << "3a \n";
   out << *this << "i";
-  std::cout << "4a \n";
+  //std::cout << "4a \n";
   return out;
 }
 
@@ -927,28 +923,23 @@ BigUnsigned<2> BigInteger<2>::GetNumeroCrudo() const {
  }
 
 BigNumber<2>& BigInteger<2>::add(const BigNumber<2>& sumador) const {
-  std::cout << "1111111111117 \n";
-  BigInteger<2> resultado_suma =  *this + BigInteger<2>(sumador);
-  static BigNumber<2>& resultado = resultado_suma;
-  return resultado;
+  BigNumber<2>* resultado = new BigInteger<2>{*this + BigInteger<2>(sumador)};
+  return *resultado;
 }
 
 BigNumber<2>& BigInteger<2>::subtract(const BigNumber<2>& sustraendo) const {
-  BigInteger<2> resultado_resta =  *this - BigInteger<2>(sustraendo);
-  static BigNumber<2>& resultado = resultado_resta;
-  return resultado;
+  BigNumber<2>* resultado = new BigInteger<2>{*this - BigInteger<2>(sustraendo)};
+  return *resultado;
 }
 
 BigNumber<2>& BigInteger<2>::multiply(const BigNumber<2>& multiplicador) const {
-  BigInteger<2> resultado_mult =  *this * BigInteger<2>(multiplicador);
-  static BigNumber<2>& resultado = resultado_mult;
-  return resultado;
+  BigNumber<2>* resultado = new BigInteger<2>{*this * BigInteger<2>(multiplicador)};
+  return *resultado;
 }
 
 BigNumber<2>& BigInteger<2>::divide(const BigNumber<2>& divisor) const {
-  BigInteger<2> resultado_div =  *this / BigInteger<2>(divisor);
-  static BigNumber<2>& resultado = resultado_div;
-  return resultado;
+  BigNumber<2>* resultado = new BigInteger<2>{*this / BigInteger<2>(divisor)};
+  return *resultado;
 }
 
 BigInteger<2>::operator BigUnsigned<2>() const {

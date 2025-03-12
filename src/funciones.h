@@ -21,7 +21,7 @@ template <unsigned char Base>
 BigInteger<Base> MCD(const BigInteger<Base>& primer_entero, const BigInteger<Base>& segundo_entero);
 
 template <unsigned char Base>
-BigNumber<Base>* Calculadora(BigNumber<Base>& primer_operando, BigNumber<Base>& segundo_operando, unsigned char signo);
+BigNumber<Base>& Calculadora(BigNumber<Base>& primer_operando, BigNumber<Base>& segundo_operando, unsigned char signo);
 
 template <unsigned char Base>
 void MostrarResultados(std::ostream& out, const std::unordered_map<std::string, BigNumber<Base>*>& resultados);
